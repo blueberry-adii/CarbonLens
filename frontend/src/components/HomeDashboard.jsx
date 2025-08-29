@@ -1,29 +1,6 @@
 import { TrendingDown } from "lucide-react";
 import PopupForm from "./PopupForm";
-
-const mockEntries = [
-  {
-    id: 1,
-    items: ["Beef Burger", "French Fries"],
-    carbon: 8.5,
-    date: "2024-08-26",
-    time: "12:30 PM",
-  },
-  {
-    id: 2,
-    items: ["Chicken Salad"],
-    carbon: 2.1,
-    date: "2024-08-26",
-    time: "7:45 AM",
-  },
-  {
-    id: 3,
-    items: ["Coffee", "Croissant"],
-    carbon: 1.8,
-    date: "2024-08-25",
-    time: "8:15 AM",
-  },
-];
+import { mockEntries } from "../constants";
 
 export default function HomeDashboard() {
   const todayCarbon = 7.2;
