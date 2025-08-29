@@ -1,4 +1,5 @@
 import { TrendingDown } from "lucide-react";
+import PopupForm from "./PopupForm";
 
 const mockEntries = [
   {
@@ -44,6 +45,7 @@ export default function HomeDashboard() {
             Record your daily diet and its carbon impact
           </p>
         </div>
+        <PopupForm />
       </div>
 
       <div className="bg-emerald-50 border border-emerald-400/25 rounded-xl shadow-sm p-6">
