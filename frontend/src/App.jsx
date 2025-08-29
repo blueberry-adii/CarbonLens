@@ -1,7 +1,13 @@
 import Header from "./components/Header";
+import HomeDashboard from "./components/HomeDashboard";
 
 function App() {
-  return <Header />;
+  return (
+    <>
+      <Header />
+      <HomeDashboard />
+    </>
+  );
 }
 
 export default App;
