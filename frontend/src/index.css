@@ -49,3 +49,8 @@ input[type="checkbox"]:checked::after {
   top: -4px;
   left: 2px;
 }
+
+input,
+textarea {
+  caret-color: #4caf50;
+}
