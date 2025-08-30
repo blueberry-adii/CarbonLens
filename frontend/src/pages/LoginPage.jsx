@@ -514,8 +514,13 @@ export default function AuthPage() {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <input type="checkbox" id="terms" required />
+                <div className="flex items-center gap-3 max-[400px]:gap-2">
+                  <input
+                    type="checkbox"
+                    className="shrink-0"
+                    id="terms"
+                    required
+                  />
                   <label
                     htmlFor="terms"
                     className="text-sm text-gray-600 leading-relaxed"
