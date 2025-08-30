@@ -131,3 +131,45 @@ exports.getLeaderboard = asyncHandler(async (req, res) => {
     })
   );
 });
+
+exports.getUserAchievements = (req, res) => {
+  const achievements = [
+    {
+      id: "first_entry",
+      name: "Getting Started",
+      description: "Logged your first meal",
+      icon: "🌱",
+      unlocked: req.user.stats.totalEntries > 0,
+      unlockedAt: req.user.stats.totalEntries > 0 ? req.user.createdAt : null,
+    },
+    {
+      id: "week_tracker",
+      name: "Week Warrior",
+      description: "Tracked meals for 7 consecutive days",
+      icon: "🔥",
+      unlocked: req.user.stats.streak.current >= 7,
+      unlockedAt:
+        req.user.stats.streak.current >= 7
+          ? req.user.stats.streak.lastEntry
+          : null,
+    },
+    {
+      id: "carbon_saver",
+      name: "Carbon Saver",
+      description: "Saved 100kg of CO2",
+      icon: "🌍",
+      unlocked: req.user.stats.carbonSaved >= 100,
+      unlockedAt: null,
+    },
+    {
+      id: "century_club",
+      name: "Century Club",
+      description: "Logged 100 meals",
+      icon: "💯",
+      unlocked: req.user.stats.totalEntries >= 100,
+      unlockedAt: null,
+    },
+  ];
+
+  res.status(200).json(new ApiResponse(200, achievements));
+};

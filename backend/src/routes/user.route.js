@@ -4,6 +4,7 @@ const {
   getUserProfile,
   updateUserProfile,
   updateUserSettings,
+  getUserAchievements,
 } = require("../controllers/user.controller");
 
 const router = express.Router();
@@ -19,5 +20,8 @@ router.put("/settings", authMiddleware, updateUserSettings);
 
 // Get leaderboard
 router.get("/leaderboard", authMiddleware, getLeaderboard);
+
+// Get user achievements
+router.get("/achievements", authMiddleware, getUserAchievements);
 
 module.exports = router;
