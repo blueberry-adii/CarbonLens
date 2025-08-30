@@ -55,3 +55,79 @@ exports.updateUserSettings = asyncHandler(async (req, res) => {
     data: updatedUser.settings,
   });
 });
+
+exports.getLeaderboard = asyncHandler(async (req, res) => {
+  const { period = "week" } = req.query;
+
+  let startDate;
+  const now = new Date();
+
+  switch (period) {
+    case "week":
+      startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      break;
+    case "month":
+      startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+      break;
+    default:
+      startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  }
+
+  const leaderboardData = await CarbonEntry.aggregate([
+    {
+      $match: {
+        date: { $gte: startDate },
+      },
+    },
+    {
+      $group: {
+        _id: "$userId",
+        totalCarbon: { $sum: "$analysis.totalCarbon" },
+        entryCount: { $sum: 1 },
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "_id",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    {
+      $unwind: "$user",
+    },
+    {
+      $project: {
+        name: "$user.name",
+        totalCarbon: 1,
+        entryCount: 1,
+        carbonSaved: { $subtract: [50, "$totalCarbon"] },
+      },
+    },
+    {
+      $sort: { carbonSaved: -1 },
+    },
+    {
+      $limit: 20,
+    },
+  ]);
+
+  const leaderboard = leaderboardData.map((entry, index) => ({
+    rank: index + 1,
+    name: entry.name,
+    totalCarbon: entry.totalCarbon,
+    carbonSaved: Math.max(0, entry.carbonSaved),
+    entryCount: entry.entryCount,
+    isCurrentUser: entry._id.equals(req.user._id),
+  }));
+
+  res.status(200).json(
+    new ApiResponse(200, {
+      period,
+      leaderboard,
+      userRank:
+        leaderboard.findIndex((entry) => entry.isCurrentUser) + 1 || null,
+    })
+  );
+});

@@ -17,4 +17,7 @@ router.put("/profile", authMiddleware, updateUserProfile);
 // Update user settings
 router.put("/settings", authMiddleware, updateUserSettings);
 
+// Get leaderboard
+router.get("/leaderboard", authMiddleware, getLeaderboard);
+
 module.exports = router;
