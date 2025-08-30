@@ -2,7 +2,7 @@ const User = require("../models/user.model");
 const asyncHandler = require("../utils/asyncHandler");
 const ApiResponse = require("../utils/ApiResponse");
 const ApiError = require("../utils/ApiError");
-const generateToken = require("../utils/generateToken");
+const { generateToken } = require("../utils/generateToken");
 
 exports.register = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
