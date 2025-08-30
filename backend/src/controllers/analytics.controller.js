@@ -124,3 +124,60 @@ exports.getWeeklyTrendData = asyncHandler(async (req, res) => {
       new ApiResponse(200, filledData, "Got weekly trend data successfully")
     );
 });
+
+exports.carbonCategoryBreakdown = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const { period = "month" } = req.query;
+
+  let startDate;
+  const now = new Date();
+
+  switch (period) {
+    case "week":
+      startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      break;
+    case "month":
+      startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+      break;
+    case "year":
+      startDate = new Date(now.getFullYear(), 0, 1);
+      break;
+    default:
+      startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+  }
+
+  const categoryData = await CarbonEntry.aggregate([
+    {
+      $match: {
+        userId,
+        date: { $gte: startDate },
+      },
+    },
+    {
+      $unwind: "$analysis.detectedItems",
+    },
+    {
+      $group: {
+        _id: "$analysis.detectedItems.category",
+        totalCarbon: { $sum: "$analysis.totalCarbon" },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { totalCarbon: -1 },
+    },
+  ]);
+
+  res.status(200).json(
+    new ApiResponse(
+      200,
+      categoryData.map((item) => ({
+        category: item._id || "other",
+        carbon: item.totalCarbon,
+        count: item.count,
+        percentage: 0,
+      })),
+      "Categorized carbon data successfully"
+    )
+  );
+});
