@@ -8,8 +8,9 @@ const app = express();
 const connectDB = require("./config/db");
 
 const ApiResponse = require("./utils/ApiResponse");
+const errorHandler = require("./middlewares/error.middleware");
 
-// Routes
+// Import Routes
 const authRoutes = require("./routes/auth.route");
 
 const PORT = process.env.PORT || 5000;
@@ -20,11 +21,14 @@ app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-app.get("/health", (req, res) => {
+// Routes
+app.use("/api/v1/auth", authRoutes);
+
+// Health endpoint
+app.get("/api/v1/health", (req, res) => {
   res.status(200).json(new ApiResponse(200, {}, "OK"));
 });
-
-app.use("/api/v1/auth", authRoutes);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server connected on port: ${PORT}`);
