@@ -13,6 +13,7 @@ const errorHandler = require("./middlewares/error.middleware");
 // Import Routes
 const authRoutes = require("./routes/auth.route");
 const userRoutes = require("./routes/user.route");
+const analyticsRoutes = require("./routes/analytics.route");
 
 const PORT = process.env.PORT || 5000;
 
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 // Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/analytics", analyticsRoutes);
 
 // Health endpoint
 app.get("/api/v1/health", (req, res) => {
