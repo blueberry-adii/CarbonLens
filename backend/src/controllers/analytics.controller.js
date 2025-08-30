@@ -1,5 +1,6 @@
 const asyncHandler = require("../utils/asyncHandler");
 const CarbonEntry = require("../models/carbonEntry.model");
+const ApiResponse = require("../utils/ApiResponse");
 
 exports.getDashboardStats = asyncHandler(async (req, res) => {
   const userId = req.user._id;
@@ -71,8 +72,55 @@ exports.getDashboardStats = asyncHandler(async (req, res) => {
     })),
   };
 
-  res.json({
-    success: true,
-    data: dashboard,
-  });
+  res
+    .status(200)
+    .json(new ApiResponse(200, dashboard, "Got Dashboard Stats successfully"));
+});
+
+exports.getWeeklyTrendData = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const now = new Date();
+  const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+  const weeklyData = await CarbonEntry.aggregate([
+    {
+      $match: {
+        userId,
+        date: { $gte: weekAgo },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          date: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+        },
+        totalCarbon: { $sum: "$analysis.totalCarbon" },
+        entryCount: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { "_id.date": 1 },
+    },
+  ]);
+
+  const filledData = [];
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+    const dateString = date.toISOString().split("T")[0];
+
+    const existingData = weeklyData.find((d) => d._id.date === dateString);
+
+    filledData.push({
+      date: dateString,
+      carbon: existingData?.totalCarbon || 0,
+      entries: existingData?.entryCount || 0,
+      dayName: date.toLocaleDateString("en-US", { weekday: "short" }),
+    });
+  }
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, filledData, "Got weekly trend data successfully")
+    );
 });
