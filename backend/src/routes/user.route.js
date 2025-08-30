@@ -5,6 +5,7 @@ const {
   updateUserProfile,
   updateUserSettings,
   getUserAchievements,
+  getLeaderboard,
 } = require("../controllers/user.controller");
 
 const router = express.Router();
