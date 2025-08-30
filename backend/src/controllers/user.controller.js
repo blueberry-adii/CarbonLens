@@ -1,6 +1,7 @@
 const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 const User = require("../models/user.model");
+const CarbonEntry = require("../models/carbonEntry.model");
 
 exports.getUserProfile = asyncHandler(async (req, res, next) => {
   res.status(200).json(
