@@ -14,7 +14,6 @@ import {
 import axios from "axios";
 
 export default function AuthPage() {
-  const navigate = useNavigate();
   const [activeForm, setActiveForm] = useState("login");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -30,6 +29,7 @@ export default function AuthPage() {
     email: "",
     password: "",
     confirmPassword: "",
+    checkbox: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -53,6 +53,9 @@ export default function AuthPage() {
       newErrors.password = "Password is required";
     if (!signupForm.confirmPassword.trim())
       newErrors.confirmPassword = "Please confirm password";
+    if (!signupForm.checkbox)
+      newErrors.checkbox =
+        "Please accept the Terms of Service and Privacy Policy to proceed.";
 
     if (signupForm.email && !/\S+@\S+\.\S+/.test(signupForm.email)) {
       newErrors.email = "Please enter a valid email";
@@ -535,32 +538,46 @@ export default function AuthPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 max-[400px]:gap-2">
-                  <input
-                    type="checkbox"
-                    className="shrink-0"
-                    id="terms"
-                    required
-                  />
-                  <label
-                    htmlFor="terms"
-                    className="text-sm text-gray-600 leading-relaxed"
-                  >
-                    I agree to the{" "}
-                    <button
-                      type="button"
-                      className="text-green-600 hover:text-green-700 font-medium cursor-pointer"
+                <div className="flex-col">
+                  <div className="flex items-center gap-3 max-[400px]:gap-2">
+                    <input
+                      type="checkbox"
+                      checked={signupForm.checkbox}
+                      onChange={(e) =>
+                        setSignupForm((prev) => ({
+                          ...prev,
+                          checkbox: !signupForm.checkbox,
+                        }))
+                      }
+                      className="shrink-0"
+                      id="terms"
+                      required
+                    />
+                    <label
+                      htmlFor="terms"
+                      className="text-sm text-gray-600 leading-relaxed"
                     >
-                      Terms of Service
-                    </button>{" "}
-                    and{" "}
-                    <button
-                      type="button"
-                      className="text-green-600 hover:text-green-700 font-medium cursor-pointer"
-                    >
-                      Privacy Policy
-                    </button>
-                  </label>
+                      I agree to the{" "}
+                      <button
+                        type="button"
+                        className="text-green-600 hover:text-green-700 font-medium cursor-pointer"
+                      >
+                        Terms of Service
+                      </button>{" "}
+                      and{" "}
+                      <button
+                        type="button"
+                        className="text-green-600 hover:text-green-700 font-medium cursor-pointer"
+                      >
+                        Privacy Policy
+                      </button>
+                    </label>
+                  </div>
+                  {errors.checkbox && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.checkbox}
+                    </p>
+                  )}
                 </div>
 
                 <button
