@@ -20,7 +20,8 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 app.use(
   cors({
-    origin: "*",
+    credentials: true,
+    origin: "http://localhost:5173",
   })
 );
 app.use(express.json({ limit: "10mb" }));

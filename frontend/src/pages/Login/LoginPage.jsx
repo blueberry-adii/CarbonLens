@@ -79,10 +79,14 @@ export default function AuthPage() {
     setErrors({});
 
     try {
-      const res = await axios.post("http://localhost:5000/api/v1/auth/login", {
-        email: loginForm.email,
-        password: loginForm.password,
-      });
+      const res = await axios.post(
+        "http://localhost:5000/api/v1/auth/login",
+        {
+          email: loginForm.email,
+          password: loginForm.password,
+        },
+        { withCredentials: true }
+      );
 
       setSuccess("Login successful! Redirecting...");
       setTimeout(() => {
@@ -91,7 +95,7 @@ export default function AuthPage() {
     } catch (error) {
       setErrors({
         general:
-          error.response.data.message || "Login failed. Please try again.",
+          error.response?.data?.message || "Login failed. Please try again.",
       });
     } finally {
       setLoading(false);
@@ -117,7 +121,8 @@ export default function AuthPage() {
           name: signupForm.name,
           email: signupForm.email,
           password: signupForm.password,
-        }
+        },
+        { withCredentials: true }
       );
       setSuccess("Account created successfully! Welcome to CarbonLens!");
       setTimeout(() => {
@@ -127,7 +132,7 @@ export default function AuthPage() {
     } catch (error) {
       setErrors({
         general:
-          error.response.data.message || "Signup failed. Please try again.",
+          error.response?.data?.message || "Signup failed. Please try again.",
       });
     } finally {
       setLoading(false);
