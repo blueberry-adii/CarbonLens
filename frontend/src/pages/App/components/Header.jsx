@@ -5,10 +5,9 @@ export default function Header() {
     <div className="p-4 rounded-b-lg shadow-xl">
       <div className="text-2xl font-bold flex items-center justify-between max-w-[1280px] mx-auto">
         <div className="flex items-center gap-4">
-          <Leaf
-            size={40}
-            className="text-emerald-600 bg-emerald-100 p-1.5 rounded-md"
-          />
+          <div className="w-10 h-10 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl flex items-center justify-center">
+            <Leaf size={24} className="text-white" />
+          </div>
           <div className="flex flex-col">
             <h1>CarbonLens</h1>
             <h2 className="text-sm font-medium text-gray-400">
