@@ -77,6 +77,19 @@ exports.login = asyncHandler(async (req, res, next) => {
     );
 });
 
+exports.logout = asyncHandler(async (req, res, next) => {
+  req.user = null;
+
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, [], "Logged out successfully"));
+});
+
 exports.me = (req, res) => {
   res.status(200).json(
     new ApiResponse(
@@ -89,7 +102,6 @@ exports.me = (req, res) => {
         stats: req.user.stats,
         settings: req.user.settings,
       },
-
       "Fetched User successfully"
     )
   );
