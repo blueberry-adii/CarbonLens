@@ -22,21 +22,24 @@ exports.register = asyncHandler(async (req, res, next) => {
 
   const token = generateToken(user._id);
 
-  res.status(201).json(
-    new ApiResponse(
-      201,
-      {
-        token,
-        user: {
+  res
+    .cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+    })
+    .status(201)
+    .json(
+      new ApiResponse(
+        201,
+        {
           id: user._id,
           name: user.name,
           email: user.email,
           joinDate: user.profile.joinDate,
         },
-      },
-      "User registered successfully"
-    )
-  );
+        "User registered successfully"
+      )
+    );
 });
 
 exports.login = asyncHandler(async (req, res, next) => {
@@ -53,22 +56,25 @@ exports.login = asyncHandler(async (req, res, next) => {
 
   const token = generateToken(user._id);
 
-  res.status(200).json(
-    new ApiResponse(
-      200,
-      {
-        token,
-        user: {
+  res
+    .cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+    })
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        {
           id: user._id,
           name: user.name,
           email: user.email,
           stats: user.stats,
           settings: user.settings,
         },
-      },
-      "Login successful"
-    )
-  );
+        "Login successful"
+      )
+    );
 });
 
 exports.me = (req, res) => {
@@ -76,15 +82,14 @@ exports.me = (req, res) => {
     new ApiResponse(
       200,
       {
-        user: {
-          id: req.user._id,
-          name: req.user.name,
-          email: req.user.email,
-          profile: req.user.profile,
-          stats: req.user.stats,
-          settings: req.user.settings,
-        },
+        id: req.user._id,
+        name: req.user.name,
+        email: req.user.email,
+        profile: req.user.profile,
+        stats: req.user.stats,
+        settings: req.user.settings,
       },
+
       "Fetched User successfully"
     )
   );

@@ -4,7 +4,8 @@ const asyncHandler = require("../utils/asyncHandler");
 const ApiError = require("../utils/ApiError");
 
 const authMiddleware = asyncHandler(async (req, res, next) => {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
+  const token =
+    req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) throw new ApiError(401, "Access token required");
 

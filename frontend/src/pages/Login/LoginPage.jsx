@@ -11,6 +11,7 @@ import {
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
+import axios from "axios";
 
 export default function AuthPage() {
   const navigate = useNavigate();
@@ -78,14 +79,20 @@ export default function AuthPage() {
     setErrors({});
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const res = await axios.post("http://localhost:5000/api/v1/auth/login", {
+        email: loginForm.email,
+        password: loginForm.password,
+      });
 
       setSuccess("Login successful! Redirecting...");
       setTimeout(() => {
-        navigate("/");
+        navigate("/app");
       }, 1000);
     } catch (error) {
-      setErrors({ general: "Login failed. Please try again." });
+      setErrors({
+        general:
+          error.response.data.message || "Login failed. Please try again.",
+      });
     } finally {
       setLoading(false);
     }
@@ -104,15 +111,24 @@ export default function AuthPage() {
     setErrors({});
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
+      const res = await axios.post(
+        "http://localhost:5000/api/v1/auth/register",
+        {
+          name: signupForm.name,
+          email: signupForm.email,
+          password: signupForm.password,
+        }
+      );
       setSuccess("Account created successfully! Welcome to CarbonLens!");
       setTimeout(() => {
         setActiveForm("login");
         setSuccess("");
       }, 2000);
     } catch (error) {
-      setErrors({ general: "Signup failed. Please try again." });
+      setErrors({
+        general:
+          error.response.data.message || "Signup failed. Please try again.",
+      });
     } finally {
       setLoading(false);
     }
