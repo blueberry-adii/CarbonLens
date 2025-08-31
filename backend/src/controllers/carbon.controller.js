@@ -119,3 +119,32 @@ exports.getUserCarbonEntries = asyncHandler(async (req, res, next) => {
     )
   );
 });
+
+exports.getSpecificEntry = asyncHandler(async (req, res, next) => {
+  const entry = await CarbonEntry.findOne({
+    _id: req.params.id,
+    userId: req.user._id,
+  });
+
+  if (!entry) throw new ApiError(404, "Entry not found");
+
+  res.status(200).json(new ApiResponse(200, entry, "Got Entry successfully"));
+});
+
+exports.deleteEntry = asyncHandler(async (req, res, next) => {
+  const entry = await CarbonEntry.findOneAndDelete({
+    _id: req.params.id,
+    userId: req.user._id,
+  });
+
+  if (!entry) throw new ApiError(404, "Entry not found");
+
+  await User.findByIdAndUpdate(req.user._id, {
+    $inc: {
+      "stats.totalEntries": -1,
+      "stats.totalCarbonTracked": -entry.analysis.totalCarbon,
+    },
+  });
+
+  res.json(new ApiResponse(200, [], "Entry deleted successfully"));
+});
