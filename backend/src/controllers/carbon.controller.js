@@ -82,3 +82,40 @@ exports.analyzeMeal = asyncHandler(async (req, res, next) => {
     )
   );
 });
+
+exports.getUserCarbonEntries = asyncHandler(async (req, res, next) => {
+  const { page = 1, limit = 20, startDate, endDate } = req.query;
+
+  const query = { userId: req.user._id };
+
+  if (startDate || endDate) {
+    query.date = {};
+    if (startDate) query.date.$gte = new Date(startDate);
+    if (endDate) query.date.$lte = new Date(endDate);
+  }
+
+  const entries = await CarbonEntry.find(query)
+    .sort({ date: -1 })
+    .limit(limit * 1)
+    .skip((page - 1) * limit)
+    .select("-image.path");
+
+  const total = await CarbonEntry.countDocuments(query);
+
+  res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        entries,
+        pagination: {
+          currentPage: parseInt(page),
+          totalPages: Math.ceil(total / limit),
+          totalEntries: total,
+          hasNext: page * limit < total,
+          hasPrev: page > 1,
+        },
+      },
+      "Got User Carbon Entries successfully"
+    )
+  );
+});
