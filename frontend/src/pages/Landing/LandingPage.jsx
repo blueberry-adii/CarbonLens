@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import AnimatedSection from "../components/AnimatedSection";
+import AnimatedSection from "./components/AnimatedSection";
 import {
   Leaf,
   Camera,

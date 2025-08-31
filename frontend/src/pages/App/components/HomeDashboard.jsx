@@ -1,6 +1,6 @@
 import { TrendingDown } from "lucide-react";
 import PopupForm from "./PopupForm";
-import { mockEntries } from "../constants";
+import { mockEntries } from "../../../constants";
 
 export default function HomeDashboard() {
   const todayCarbon = 7.2;

@@ -1,5 +1,5 @@
 import { TrendingDown, Leaf } from "lucide-react";
-import { mockCarbonData, mockEntries } from "../constants";
+import { mockCarbonData, mockEntries } from "../../../constants";
 
 export default function StatsPage() {
   const totalSaved = 45.2;

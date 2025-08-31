@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import CarbonLensApp from "./pages/CarbonLensApp";
-import LoginPage from "./pages/LoginPage";
-import LandingPage from "./pages/LandingPage";
+import CarbonLensApp from "./pages/App/CarbonLensApp";
+import LoginPage from "./pages/Login/LoginPage";
+import LandingPage from "./pages/Landing/LandingPage";
 
 function App() {
   const isLoggedIn = false;

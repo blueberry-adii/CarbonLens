@@ -1,9 +1,9 @@
-import Header from "../components/Header";
-import HomeDashboard from "../components/HomeDashboard";
-import Capture from "../components/Capture";
-import ProfilePage from "../components/ProfilePage";
-import StatsPage from "../components/StatsPage";
-import Navigation from "../components/Navigation";
+import Header from "./components/Header";
+import HomeDashboard from "./components/HomeDashboard";
+import Capture from "./components/Capture";
+import ProfilePage from "./components/ProfilePage";
+import StatsPage from "./components/StatsPage";
+import Navigation from "./components/Navigation";
 import { useState } from "react";
 
 export default function CarbonLensApp() {
