@@ -90,7 +90,7 @@ export default function AuthPage() {
 
       setSuccess("Login successful! Redirecting...");
       setTimeout(() => {
-        navigate("/app");
+        window.location.reload();
       }, 1000);
     } catch (error) {
       setErrors({

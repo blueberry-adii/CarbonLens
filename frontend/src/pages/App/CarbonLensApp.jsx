@@ -5,8 +5,11 @@ import ProfilePage from "./components/ProfilePage";
 import StatsPage from "./components/StatsPage";
 import Navigation from "./components/Navigation";
 import { useState } from "react";
+import { useAuth } from "../../utils/AuthContext";
 
 export default function CarbonLensApp() {
+  const { user } = useAuth();
+  console.log(user);
   const [currentPage, setCurrentPage] = useState("home");
 
   const renderCurrentPage = () => {

@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import AnimatedSection from "./components/AnimatedSection";
+import { useAuth } from "../../utils/AuthContext";
 import {
   Leaf,
   Camera,
@@ -22,6 +23,7 @@ import {
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const reviewsRef = useRef(null);
   const featuresRef = useRef(null);
@@ -30,6 +32,11 @@ const LandingPage = () => {
 
   const scrollToSection = (ref) => {
     ref.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleGetStarted = () => {
+    if (user) navigate("/app");
+    else navigate("/login");
   };
 
   return (
@@ -80,7 +87,7 @@ const LandingPage = () => {
                 Pricing
               </a>
               <button
-                onClick={() => navigate("/app")}
+                onClick={handleGetStarted}
                 className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transition-all duration-300 cursor-pointer"
               >
                 Get Started
@@ -131,7 +138,7 @@ const LandingPage = () => {
                   Pricing
                 </a>
                 <button
-                  onClick={() => navigate("/app")}
+                  onClick={handleGetStarted}
                   className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-full font-medium w-full cursor-pointer"
                 >
                   Get Started
@@ -464,7 +471,7 @@ const LandingPage = () => {
                 ],
                 cta: "Start Free",
                 popular: false,
-                onClick: () => navigate("/app"),
+                onClick: handleGetStarted,
               },
               {
                 name: "Pro",

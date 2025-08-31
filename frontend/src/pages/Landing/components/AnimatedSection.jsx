@@ -13,7 +13,7 @@ const AnimatedSection = ({ id, children, className }) => {
           observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.25 }
     );
 
     if (ref.current) observer.observe(ref.current);

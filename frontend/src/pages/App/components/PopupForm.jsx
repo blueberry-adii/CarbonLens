@@ -25,7 +25,7 @@ export default function PopupForm() {
     <div className="inline-block">
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 transition-colors ease-in-out px-4 py-2 max-[640px]:px-3 max-[640px]:py-1.5 rounded-md text-white cursor-pointer drop-shadow-lg"
+        className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transition-colors ease-in-out px-4 py-2 max-[640px]:px-3 max-[640px]:py-1.5 rounded-full text-white cursor-pointer drop-shadow-lg"
       >
         <Plus size={18} />{" "}
         <p className="max-[640px]:text-sm max-[450px]:hidden">Add Food</p>
@@ -79,7 +79,7 @@ export default function PopupForm() {
             <div className="flex justify-between space-x-2 mt-4">
               <button
                 type="submit"
-                className="px-4 py-2 grow bg-emerald-500 hover:bg-emerald-600 text-white rounded-md cursor-pointer transition-colors ease-in-out"
+                className="px-4 py-2 grow bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-md cursor-pointer transition-colors ease-in-out"
               >
                 Submit
               </button>
