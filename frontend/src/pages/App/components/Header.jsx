@@ -1,21 +1,35 @@
-import { Leaf, Menu } from "lucide-react";
+import { Leaf } from "lucide-react";
 
-export default function Header() {
+export default function Header({
+  title,
+  subtitle,
+  showBack = false,
+  onBack,
+  actions,
+}) {
   return (
-    <div className="p-4 rounded-b-lg shadow-xl">
-      <div className="text-2xl font-bold flex items-center justify-between max-w-[1280px] mx-auto">
-        <div className="flex items-center gap-4">
-          <div className="w-10 h-10 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl flex items-center justify-center">
-            <Leaf size={24} className="text-white" />
-          </div>
-          <div className="flex flex-col">
-            <h1>CarbonLens</h1>
-            <h2 className="text-sm font-medium text-gray-400">
-              Carbon Footprint Tracker
-            </h2>
+    <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-6 rounded-b-3xl shadow-xl">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          {showBack && (
+            <button
+              onClick={onBack}
+              className="p-2 hover:bg-white/20 rounded-xl transition-colors"
+            >
+              <ArrowRight size={20} className="rotate-180" />
+            </button>
+          )}
+          <div>
+            <h1 className="text-2xl font-bold flex items-center gap-2">
+              <Leaf size={28} />
+              {title}
+            </h1>
+            {subtitle && (
+              <p className="text-green-100 text-sm mt-1">{subtitle}</p>
+            )}
           </div>
         </div>
-        <Menu size={32} className="cursor-pointer" />
+        {actions && <div className="flex gap-2">{actions}</div>}
       </div>
     </div>
   );

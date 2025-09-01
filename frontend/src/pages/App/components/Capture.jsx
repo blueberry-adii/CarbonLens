@@ -1,7 +1,8 @@
 import { useState, useRef } from "react";
-import { Camera, Upload, Leaf } from "lucide-react";
+import { Camera, Upload, Leaf, CheckCircle } from "lucide-react";
+import Header from "./Header";
 
-export default function Capture() {
+export default function CameraCapture() {
   const [capturedImage, setCapturedImage] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [results, setResults] = useState(null);
@@ -23,16 +24,27 @@ export default function Capture() {
     setAnalyzing(true);
     setTimeout(() => {
       setResults({
-        items: ["Beef Burger", "French Fries", "Soda"],
-        totalCarbon: 8.7,
-        breakdown: [
-          { item: "Beef Burger", carbon: 6.2 },
-          { item: "French Fries", carbon: 1.8 },
-          { item: "Soda", carbon: 0.7 },
+        items: [
+          { name: "Grilled Salmon", carbon: 4.2 },
+          { name: "Quinoa", carbon: 1.8 },
+          { name: "Steamed Broccoli", carbon: 0.7 },
         ],
+        totalCarbon: 6.7,
+        confidence: 0.92,
+        tips: [
+          "Excellent sustainable choice!",
+          "Salmon is a great protein with lower carbon impact",
+          "Adding more vegetables reduces footprint further",
+        ],
+        comparison: { avgMeal: 12.5, savings: 5.8 },
       });
       setAnalyzing(false);
     }, 3000);
+  };
+
+  const saveEntry = () => {
+    console.log("Saving entry...");
+    reset();
   };
 
   const reset = () => {
@@ -41,120 +53,176 @@ export default function Capture() {
     setAnalyzing(false);
   };
 
-  return (
-    <div className="px-4 space-y-6 max-w-[1280px] mx-auto">
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-1 max-[640px]:gap-0">
-          <h2 className="flex items-center gap-2 text-4xl max-[640px]:text-2xl max-[450px]:text-xl max-[450px]:gap-0 font-bold">
-            Capture Meal
-          </h2>
-          <p className="text-gray-500 max-[640px]:text-sm max-[450px]:text-xs">
-            Capture your meal and upload it here to analyze its carbon impact
+  if (analyzing) {
+    return (
+      <div className="fixed inset-0 bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center z-50">
+        <div className="text-center">
+          <div className="relative mb-8">
+            <div className="w-24 h-24 border-4 border-green-200 rounded-full animate-spin"></div>
+            <div className="w-16 h-16 border-t-4 border-green-600 rounded-full animate-spin absolute inset-4"></div>
+            <div className="w-24 h-24 bg-gradient-to-br from-green-600 to-emerald-600 rounded-full flex items-center justify-center absolute inset-0 animate-pulse">
+              <Leaf size={32} className="text-white animate-bounce" />
+            </div>
+          </div>
+          <h3 className="text-2xl font-bold text-gray-800 mb-2">
+            Analyzing Your Meal
+          </h3>
+          <p className="text-gray-600">
+            AI is identifying ingredients and calculating carbon footprint
           </p>
+          <div className="flex justify-center space-x-1 mt-6">
+            <div className="w-3 h-3 bg-green-500 rounded-full animate-bounce"></div>
+            <div className="w-3 h-3 bg-emerald-500 rounded-full animate-bounce delay-100"></div>
+            <div className="w-3 h-3 bg-teal-500 rounded-full animate-bounce delay-200"></div>
+          </div>
         </div>
       </div>
+    );
+  }
 
-      {!capturedImage ? (
-        <div className="bg-white rounded-xl shadow-lg p-8 text-center space-y-6">
-          <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-            <Camera size={40} className="text-green-600" />
-          </div>
+  return (
+    <div className="bg-gray-50 min-h-screen">
+      <Header
+        title="Capture Meal"
+        subtitle="Snap a photo to track carbon footprint"
+      />
 
-          <div>
-            <h2 className="text-xl font-semibold mb-2">
-              Take a Photo of Your Meal
+      <div className="p-6 space-y-6 pb-24">
+        {!capturedImage ? (
+          <div className="bg-white rounded-3xl shadow-xl p-12 text-center">
+            <div className="w-32 h-32 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-8 hover:scale-110 transition-transform duration-300">
+              <Camera size={48} className="text-green-600" />
+            </div>
+
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              Ready to Analyze?
             </h2>
-            <p className="text-gray-600">
-              AI will analyze your food and calculate its carbon footprint
+            <p className="text-gray-600 mb-8 leading-relaxed">
+              Take a clear photo of your meal and our AI will identify
+              ingredients and calculate the carbon footprint
             </p>
+
+            <div className="space-y-4">
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl font-semibold flex items-center justify-center gap-3 transition-all duration-300 hover:scale-105 shadow-lg"
+              >
+                <Upload size={24} />
+                Choose Photo
+              </button>
+
+              <button className="w-full border-2 border-green-600 text-green-600 hover:bg-green-50 px-8 py-4 rounded-2xl font-semibold flex items-center justify-center gap-3 transition-all duration-300">
+                <Camera size={24} />
+                Take Photo
+              </button>
+            </div>
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileSelect}
+              accept="image/*"
+              className="hidden"
+            />
           </div>
+        ) : results ? (
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <img
+                src={capturedImage}
+                alt="Analyzed meal"
+                className="w-full h-64 object-cover"
+              />
+            </div>
 
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl font-semibold flex items-center gap-2 mx-auto transition-colors cursor-pointer"
-          >
-            <Upload size={20} />
-            Choose Photo
-          </button>
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <div className="text-center mb-6">
+                <div className="text-4xl font-bold text-gray-800 mb-2">
+                  {results.totalCarbon} kg CO₂
+                </div>
+                <div className="text-gray-600">
+                  Carbon footprint of your meal
+                </div>
+                <div className="mt-3 inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm">
+                  <CheckCircle size={16} />
+                  {Math.round(results.confidence * 100)}% confidence
+                </div>
+              </div>
 
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileSelect}
-            accept="image/*"
-            className="hidden"
-          />
-        </div>
-      ) : (
-        <div className="space-y-6">
-          <div className="bg-white rounded-xl shadow-lg p-4">
+              <div className="space-y-4 mb-6">
+                <h4 className="font-semibold text-gray-800">
+                  Ingredient Breakdown:
+                </h4>
+                {results.items.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-between items-center p-3 bg-gray-50 rounded-xl"
+                  >
+                    <span className="font-medium text-gray-700">
+                      {item.name}
+                    </span>
+                    <span className="text-gray-600 font-semibold">
+                      {item.carbon} kg CO₂
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+                <h4 className="font-semibold text-blue-800 mb-2">
+                  💡 AI Insights
+                </h4>
+                <div className="space-y-1">
+                  {results.tips.map((tip, index) => (
+                    <p key={index} className="text-sm text-blue-700">
+                      • {tip}
+                    </p>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={reset}
+                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold transition-colors"
+                >
+                  Retake Photo
+                </button>
+                <button
+                  onClick={saveEntry}
+                  className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105"
+                >
+                  Save Entry
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
             <img
               src={capturedImage}
               alt="Captured meal"
-              className="h-64 object-contain rounded-lg mx-auto"
+              className="w-full h-64 object-cover"
             />
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            {analyzing ? (
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto animate-pulse">
-                  <Leaf size={32} className="text-green-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">
-                    Analyzing your meal...
-                  </h3>
-                  <p className="text-gray-600">
-                    Using AI to identify food items
-                  </p>
-                </div>
-                <div className="flex justify-center space-x-1">
-                  <div className="w-2 h-2 bg-green-600 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-green-600 rounded-full animate-bounce delay-75"></div>
-                  <div className="w-2 h-2 bg-green-600 rounded-full animate-bounce delay-150"></div>
-                </div>
+            <div className="p-6">
+              <div className="flex gap-3">
+                <button
+                  onClick={reset}
+                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold transition-colors"
+                >
+                  Retake
+                </button>
+                <button
+                  onClick={analyzeImage}
+                  className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105"
+                >
+                  Analyze
+                </button>
               </div>
-            ) : results ? (
-              <div className="space-y-6">
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold text-gray-800">
-                    {results.totalCarbon} kg CO₂
-                  </h3>
-                  <p className="text-gray-600">Carbon footprint of your meal</p>
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="font-semibold">Breakdown:</h4>
-                  {results.breakdown.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
-                    >
-                      <span className="font-medium">{item.item}</span>
-                      <span className="text-gray-600">
-                        {item.carbon} kg CO₂
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex gap-3">
-                  <button
-                    onClick={reset}
-                    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-xl font-semibold transition-colors cursor-pointer"
-                  >
-                    Retake Photo
-                  </button>
-                  <button className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-semibold transition-colors cursor-pointer">
-                    Save Entry
-                  </button>
-                </div>
-              </div>
-            ) : null}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
