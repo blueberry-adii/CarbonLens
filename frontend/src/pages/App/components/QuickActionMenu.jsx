@@ -9,8 +9,14 @@ export default function QuickActionMenu({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/30 flex items-end justify-center p-4 z-40">
-      <div className="bg-white rounded-t-3xl w-full max-w-md p-6 transform transition-all duration-300">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 bg-black/30 flex items-end justify-center p-4 z-40"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white rounded-t-3xl w-full max-w-md p-6 transform transition-all duration-300"
+      >
         <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-6"></div>
 
         <h3 className="text-lg font-semibold text-center mb-6">
