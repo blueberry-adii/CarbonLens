@@ -12,18 +12,19 @@ import StatsCard from "./StatsCard";
 import { useAuth } from "../../../utils/AuthContext";
 import { useState } from "react";
 import Header from "./Header";
-import { mockWeeklyData, mockCarbonEntries } from "../../../constants";
+import { mockWeeklyData } from "../../../constants";
 import { Link } from "react-router-dom";
 
 export default function HomeDashboard() {
-  const { user } = useAuth();
+  const { user, dashboard, weeklyTrend } = useAuth();
   const [key, setKey] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
 
-  const todayCarbon = 7.2;
-  const weeklyAvg = 9.4;
-  const monthlyTotal = 284.5;
-  const carbonSaved = user?.stats?.carbonSaved || 156.8;
+  const todayCarbon = dashboard?.today?.carbon;
+  const weeklyAvg = dashboard?.weekly?.average;
+  const monthlyTotal = dashboard?.monthly?.carbon;
+  const carbonSaved = user?.stats?.carbonSaved;
+  const carbonEntries = dashboard?.recentEntries;
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -110,7 +111,7 @@ export default function HomeDashboard() {
             </button>
           </div>
           <div className="h-32 flex items-end justify-between px-2">
-            {mockWeeklyData.map((day, index) => (
+            {weeklyTrend.map((day, index) => (
               <div key={index} className="flex flex-col items-center flex-1">
                 <div className="text-xs text-gray-500 mb-2">{day.entries}</div>
                 <div
@@ -118,7 +119,7 @@ export default function HomeDashboard() {
                   style={{ height: `${Math.max((day.carbon / 20) * 80, 8)}px` }}
                 ></div>
                 <div className="text-xs text-gray-600 mt-2 font-medium">
-                  {day.day}
+                  {day.dayName}
                 </div>
               </div>
             ))}
@@ -133,7 +134,7 @@ export default function HomeDashboard() {
             </button>
           </div>
           <div className="space-y-3">
-            {mockCarbonEntries.slice(0, 3).map((entry) => (
+            {carbonEntries.slice(0, 3).map((entry) => (
               <div
                 key={entry.id}
                 className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
