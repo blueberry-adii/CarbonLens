@@ -136,7 +136,7 @@ exports.getLeaderboard = asyncHandler(async (req, res) => {
 exports.getUserAchievements = (req, res) => {
   const achievements = [
     {
-      id: "first_entry",
+      id: 1,
       name: "Getting Started",
       description: "Logged your first meal",
       icon: "🌱",
@@ -144,7 +144,7 @@ exports.getUserAchievements = (req, res) => {
       unlockedAt: req.user.stats.totalEntries > 0 ? req.user.createdAt : null,
     },
     {
-      id: "week_tracker",
+      id: 2,
       name: "Week Warrior",
       description: "Tracked meals for 7 consecutive days",
       icon: "🔥",
@@ -155,7 +155,7 @@ exports.getUserAchievements = (req, res) => {
           : null,
     },
     {
-      id: "carbon_saver",
+      id: 3,
       name: "Carbon Saver",
       description: "Saved 100kg of CO2",
       icon: "🌍",
@@ -163,7 +163,21 @@ exports.getUserAchievements = (req, res) => {
       unlockedAt: null,
     },
     {
-      id: "century_club",
+      id: 4,
+      name: "Social Butterfly",
+      description: "Invited 5 friends",
+      icon: "🦋",
+      unlocked: false,
+    },
+    {
+      id: 5,
+      name: "Plant Pioneer",
+      description: "30 plant-based meals",
+      icon: "🥬",
+      unlocked: false,
+    },
+    {
+      id: 6,
       name: "Century Club",
       description: "Logged 100 meals",
       icon: "💯",

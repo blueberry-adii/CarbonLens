@@ -6,17 +6,25 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [achievements, setAchievements] = useState(null);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/v1/auth/me", { withCredentials: true })
-      .then((res) => {
-        setUser(res.data.data);
-      })
-      .catch(() => {
-        setUser(null);
-      })
-      .finally(() => setLoading(false));
+    async function getUser() {
+      const res1 = await axios.get("http://localhost:5000/api/v1/auth/me", {
+        withCredentials: true,
+      });
+      const res2 = await axios.get(
+        "http://localhost:5000/api/v1/users/achievements",
+        {
+          withCredentials: true,
+        }
+      );
+      setUser(res1.data.data);
+      setAchievements(res2.data.data);
+      setLoading(false);
+    }
+
+    getUser();
   }, []);
 
   function setSettings({ dailyReminders, weeklyReports, carbonGoal }) {
@@ -48,7 +56,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, loading, logout, setSettings }}
+      value={{ user, setUser, loading, logout, setSettings, achievements }}
     >
       {children}
     </AuthContext.Provider>

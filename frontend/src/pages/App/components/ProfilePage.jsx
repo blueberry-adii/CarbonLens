@@ -4,57 +4,9 @@ import { Settings, Edit3 } from "lucide-react";
 import Header from "./Header";
 
 export default function ProfilePage() {
-  const { user, logout, setSettings } = useAuth();
+  const { user, logout, setSettings, achievements } = useAuth();
   const settings = user.settings;
   const [editing, setEditing] = useState(false);
-
-  const achievements = [
-    {
-      id: 1,
-      name: "First Steps",
-      description: "Logged your first meal",
-      icon: "🌱",
-      unlocked: true,
-      date: "2024-08-15",
-    },
-    {
-      id: 2,
-      name: "Week Warrior",
-      description: "7-day tracking streak",
-      icon: "🔥",
-      unlocked: true,
-      date: "2024-08-22",
-    },
-    {
-      id: 3,
-      name: "Carbon Saver",
-      description: "Saved 100kg CO₂",
-      icon: "🌍",
-      unlocked: true,
-      date: "2024-08-25",
-    },
-    {
-      id: 4,
-      name: "Social Butterfly",
-      description: "Invited 5 friends",
-      icon: "🦋",
-      unlocked: false,
-    },
-    {
-      id: 5,
-      name: "Plant Pioneer",
-      description: "30 plant-based meals",
-      icon: "🥬",
-      unlocked: false,
-    },
-    {
-      id: 6,
-      name: "Century Club",
-      description: "100 meals tracked",
-      icon: "💯",
-      unlocked: false,
-    },
-  ];
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -83,7 +35,7 @@ export default function ProfilePage() {
               <p className="text-gray-600">{user?.email}</p>
               <div className="flex items-center gap-4 mt-2">
                 <span className="text-sm text-gray-500">
-                  Member since Aug 2024
+                  Member since Aug 2025
                 </span>
                 <span className="w-2 h-2 bg-green-500 rounded-full"></span>
                 <span className="text-sm text-green-600 font-medium">
@@ -99,19 +51,19 @@ export default function ProfilePage() {
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-4 bg-green-50 rounded-xl">
               <div className="text-2xl font-bold text-green-600">
-                {user?.stats?.totalEntries || 42}
+                {user?.stats?.totalEntries}
               </div>
               <div className="text-sm text-gray-600">Meals Tracked</div>
             </div>
             <div className="text-center p-4 bg-blue-50 rounded-xl">
               <div className="text-2xl font-bold text-blue-600">
-                {user?.stats?.carbonSaved || 156.8}
+                {user?.stats?.carbonSaved}
               </div>
               <div className="text-sm text-gray-600">CO₂ Saved (kg)</div>
             </div>
             <div className="text-center p-4 bg-purple-50 rounded-xl">
               <div className="text-2xl font-bold text-purple-600">
-                {user?.stats?.streak?.current || 7}
+                {user?.stats?.streak?.current}
               </div>
               <div className="text-sm text-gray-600">Day Streak</div>
             </div>
@@ -214,7 +166,7 @@ export default function ProfilePage() {
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-700">Last Updated</span>
-              <span className="text-gray-600">Aug 31, 2024</span>
+              <span className="text-gray-600">Aug 31, 2025</span>
             </div>
             <div className="pt-4 border-t border-gray-100 space-y-3">
               <button className="w-full text-left text-gray-700 hover:text-green-600 py-2 font-medium transition-colors cursor-pointer">
