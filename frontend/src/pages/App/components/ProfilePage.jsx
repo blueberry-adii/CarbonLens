@@ -4,7 +4,8 @@ import { Settings, Edit3 } from "lucide-react";
 import Header from "./Header";
 
 export default function ProfilePage() {
-  const { user, logout, settings, setSettings } = useAuth();
+  const { user, logout, setSettings } = useAuth();
+  const settings = user.settings;
   const [editing, setEditing] = useState(false);
 
   const achievements = [

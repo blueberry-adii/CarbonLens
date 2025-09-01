@@ -5,7 +5,6 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [settings, setSetting] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -13,7 +12,6 @@ export function AuthProvider({ children }) {
       .get("http://localhost:5000/api/v1/auth/me", { withCredentials: true })
       .then((res) => {
         setUser(res.data.data);
-        setSetting(res.data.data.settings);
       })
       .catch(() => {
         setUser(null);
@@ -32,7 +30,6 @@ export function AuthProvider({ children }) {
         setUser((prev) => {
           return { ...prev, settings: res.data.data };
         });
-        setSetting(res.data.data);
       });
   }
 
@@ -51,7 +48,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, loading, logout, settings, setSettings }}
+      value={{ user, setUser, loading, logout, setSettings }}
     >
       {children}
     </AuthContext.Provider>
