@@ -1,11 +1,6 @@
-import HomeDashboard from "./components/HomeDashboard";
-import Capture from "./components/Capture";
-import ProfilePage from "./components/ProfilePage";
-import StatsPage from "./components/StatsPage";
 import Navigation from "./components/Navigation";
 import { useState } from "react";
 import { mockCarbonEntries } from "../../constants";
-import LeaderboardPage from "./components/LeaderBoardPage";
 import EntryDetailModal from "./components/EntryDetailModal";
 import QuickActionMenu from "./components/QuickActionMenu";
 import NotificationToast from "./components/NotificationToast";
