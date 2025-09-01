@@ -21,3 +21,5 @@ router.get("/entries/:id", authMiddleware, getSpecificEntry);
 
 // Delete entry
 router.delete("/entries/:id", authMiddleware, deleteEntry);
+
+module.exports = router;

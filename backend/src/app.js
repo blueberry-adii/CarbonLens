@@ -14,6 +14,7 @@ const errorHandler = require("./middlewares/error.middleware");
 const authRoutes = require("./routes/auth.route");
 const userRoutes = require("./routes/user.route");
 const analyticsRoutes = require("./routes/analytics.route");
+const carbonRoutes = require("./routes/carbon.route");
 
 const PORT = process.env.PORT || 5000;
 
@@ -32,6 +33,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/analytics", analyticsRoutes);
+app.use("/api/v1/carbon", carbonRoutes);
 
 // Health endpoint
 app.get("/api/v1/health", (req, res) => {
