@@ -10,7 +10,7 @@ import { Outlet } from "react-router-dom";
 export default function CarbonLensApp() {
   const [currentPage, setCurrentPage] = useState("home");
   const [selectedEntry, setSelectedEntry] = useState(mockCarbonEntries[0]);
-  const [showEntryModal, setShowEntryModal] = useState(true);
+  const [showEntryModal, setShowEntryModal] = useState(false);
   const [showQuickActions, setShowQuickActions] = useState(false);
   const [notification, setNotification] = useState({
     message: "",

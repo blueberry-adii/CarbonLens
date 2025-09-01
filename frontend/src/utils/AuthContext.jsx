@@ -19,8 +19,21 @@ export function AuthProvider({ children }) {
       .finally(() => setLoading(false));
   }, []);
 
+  function logout() {
+    axios
+      .post(
+        "http://localhost:5000/api/v1/auth/logout",
+        {},
+        { withCredentials: true }
+      )
+      .then((res) => {
+        setUser(null);
+        window.location.reload();
+      });
+  }
+
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, setUser, loading, logout }}>
       {children}
     </AuthContext.Provider>
   );
