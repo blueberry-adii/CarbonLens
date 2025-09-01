@@ -4,6 +4,7 @@ import axios from "axios";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
+  const [allEntries, setAllEntries] = useState(null);
   const [weeklyTrend, setWeeklyTrend] = useState(null);
   const [dashboard, setDashboard] = useState(null);
   const [user, setUser] = useState(null);
@@ -43,20 +44,30 @@ export function AuthProvider({ children }) {
     return res.data.data;
   }
 
+  async function getAllEntries() {
+    const res = await axios.get("http://localhost:5000/api/v1/carbon/entries", {
+      withCredentials: true,
+    });
+    return res.data.data;
+  }
+
   useEffect(() => {
     async function loadApp() {
       try {
-        const [user, achievements, dashboard, weeklyTrend] = await Promise.all([
-          getUser(),
-          getAchievements(),
-          getDashboard(),
-          getWeeklyTrend(),
-        ]);
+        const [user, achievements, dashboard, weeklyTrend, allEntries] =
+          await Promise.all([
+            getUser(),
+            getAchievements(),
+            getDashboard(),
+            getWeeklyTrend(),
+            getAllEntries(),
+          ]);
 
         setUser(user);
         setAchievements(achievements);
         setDashboard(dashboard);
         setWeeklyTrend(weeklyTrend);
+        setAllEntries(allEntries);
       } catch (e) {
         console.error(e);
       } finally {
@@ -105,6 +116,7 @@ export function AuthProvider({ children }) {
         achievements,
         dashboard,
         weeklyTrend,
+        allEntries,
       }}
     >
       {children}

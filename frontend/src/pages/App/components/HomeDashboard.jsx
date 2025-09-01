@@ -12,7 +12,6 @@ import StatsCard from "./StatsCard";
 import { useAuth } from "../../../utils/AuthContext";
 import { useState } from "react";
 import Header from "./Header";
-import { mockWeeklyData } from "../../../constants";
 import { Link } from "react-router-dom";
 
 export default function HomeDashboard() {
@@ -97,7 +96,7 @@ export default function HomeDashboard() {
           <StatsCard
             icon={Award}
             title="Carbon Saved"
-            value={`${carbonSaved} kg`}
+            value={`${Math.max(0, user.settings.carbonGoal - monthlyTotal)} kg`}
             subtitle="This month"
             color="purple"
           />

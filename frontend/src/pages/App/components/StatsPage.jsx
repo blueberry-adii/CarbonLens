@@ -11,9 +11,10 @@ import {
 import StatsCard from "./StatsCard";
 import Header from "./Header";
 import { useState } from "react";
-import { mockWeeklyData, mockCarbonEntries } from "../../../constants";
+import { useAuth } from "../../../utils/AuthContext";
 
 export default function StatsPage() {
+  const { weeklyTrend, user, dashboard, allEntries } = useAuth();
   const [selectedPeriod, setSelectedPeriod] = useState("week");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
@@ -61,15 +62,18 @@ export default function StatsPage() {
           <StatsCard
             icon={TrendingDown}
             title="Carbon Reduced"
-            value="45.2 kg"
+            value={`${Math.max(
+              0,
+              user.settings.carbonGoal - dashboard.weekly.carbon
+            )} kg`}
             subtitle="vs. baseline"
             color="green"
             trend={-15}
           />
           <StatsCard
             icon={Globe}
-            title="Trees Equivalent"
-            value="2.1"
+            title="Global Average (Carbon Reduced)"
+            value="12 kg"
             subtitle="carbon offset"
             color="blue"
             trend={12}
@@ -79,18 +83,18 @@ export default function StatsPage() {
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <h3 className="text-lg font-semibold mb-4">Carbon Trend</h3>
           <div className="h-48 bg-gradient-to-t from-green-50 to-white rounded-xl flex items-end justify-between px-4 py-4">
-            {mockWeeklyData.map((day, index) => (
+            {weeklyTrend.map((day, index) => (
               <div key={index} className="flex flex-col items-center">
                 <div className="text-xs text-gray-500 mb-2">{day.carbon}kg</div>
                 <div
                   className="bg-gradient-to-t from-green-500 to-emerald-400 rounded-t-lg w-8 transition-all duration-700 delay-75"
                   style={{
-                    height: `${(day.carbon / 20) * 120}px`,
+                    height: `${(day.carbon / 20) * 120 + 5}px`,
                     animationDelay: `${index * 100}ms`,
                   }}
                 ></div>
                 <span className="text-xs text-gray-600 mt-2 font-medium">
-                  {day.day}
+                  {day.dayName}
                 </span>
               </div>
             ))}
@@ -110,7 +114,7 @@ export default function StatsPage() {
             </div>
           </div>
           <div className="space-y-3">
-            {mockCarbonEntries.map((entry) => (
+            {allEntries.entries.map((entry) => (
               <div
                 key={entry.id}
                 className="group flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:border-green-200 hover:bg-green-50 transition-all duration-300"
