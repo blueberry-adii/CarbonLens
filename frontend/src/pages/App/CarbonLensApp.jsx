@@ -10,6 +10,7 @@ import EntryDetailModal from "./components/EntryDetailModal";
 import QuickActionMenu from "./components/QuickActionMenu";
 import NotificationToast from "./components/NotificationToast";
 import FloatingActionButton from "./components/FloatingActionButton";
+import { Outlet } from "react-router-dom";
 
 export default function CarbonLensApp() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -45,22 +46,7 @@ export default function CarbonLensApp() {
     setShowEntryModal(false);
   };
 
-  const renderCurrentPage = () => {
-    switch (currentPage) {
-      case "home":
-        return <HomeDashboard />;
-      case "capture":
-        return <Capture />;
-      case "stats":
-        return <StatsPage />;
-      case "leaderboard":
-        return <LeaderboardPage />;
-      case "profile":
-        return <ProfilePage />;
-      default:
-        return <HomeDashboard />;
-    }
-  };
+  const renderCurrentPage = () => <Outlet />;
 
   return (
     <>

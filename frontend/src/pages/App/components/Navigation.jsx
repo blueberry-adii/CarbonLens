@@ -1,10 +1,16 @@
 import { Home, Plus, BarChart3, User, Trophy } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 export default Navigation = ({
   currentPage,
   setCurrentPage,
   unreadNotifications = 3,
 }) => {
+  const location = useLocation();
+
+  const fullPath = location.pathname;
+  const subRoute = fullPath.replace("/app/", "");
+
   const navItems = [
     { id: "home", icon: Home, label: "Home" },
     { id: "capture", icon: Plus, label: "Capture" },
@@ -17,11 +23,11 @@ export default Navigation = ({
     <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 px-4 py-2 z-40">
       <div className="flex justify-around max-w-md mx-auto">
         {navItems.map((item) => (
-          <button
+          <Link
             key={item.id}
-            onClick={() => setCurrentPage(item.id)}
+            to={item.id}
             className={`relative flex flex-col items-center py-2 px-3 rounded-xl transition-all duration-300 cursor-pointer ${
-              currentPage === item.id
+              subRoute === item.id
                 ? "text-green-600 bg-green-50 scale-110 shadow-lg"
                 : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
             }`}
@@ -33,7 +39,7 @@ export default Navigation = ({
                 {unreadNotifications}
               </div>
             )}
-          </button>
+          </Link>
         ))}
       </div>
     </div>
