@@ -4,14 +4,8 @@ import { Settings, Edit3 } from "lucide-react";
 import Header from "./Header";
 
 export default function ProfilePage() {
-  const { user, logout } = useAuth();
+  const { user, logout, settings, setSettings } = useAuth();
   const [editing, setEditing] = useState(false);
-  const [settings, setSettings] = useState({
-    dailyReminders: true,
-    weeklyReports: false,
-    carbonGoal: 50,
-    publicProfile: true,
-  });
 
   const achievements = [
     {
@@ -182,9 +176,7 @@ export default function ProfilePage() {
                 </div>
                 {typeof value === "boolean" ? (
                   <button
-                    onClick={() =>
-                      setSettings((prev) => ({ ...prev, [key]: !value }))
-                    }
+                    onClick={() => setSettings({ [key]: !value })}
                     className={`w-12 h-6 rounded-full transition-all duration-300 cursor-pointer ${
                       value ? "bg-green-500" : "bg-gray-300"
                     }`}
@@ -200,10 +192,9 @@ export default function ProfilePage() {
                     type="number"
                     value={value}
                     onChange={(e) =>
-                      setSettings((prev) => ({
-                        ...prev,
+                      setSettings({
                         [key]: Number(e.target.value),
-                      }))
+                      })
                     }
                     className="w-20 px-3 py-1 border border-gray-300 rounded-lg text-center"
                   />
