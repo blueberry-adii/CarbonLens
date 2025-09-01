@@ -13,6 +13,7 @@ import { useAuth } from "../../../utils/AuthContext";
 import { useState } from "react";
 import Header from "./Header";
 import { mockWeeklyData, mockCarbonEntries } from "../../../constants";
+import { Link } from "react-router-dom";
 
 export default function HomeDashboard() {
   const { user } = useAuth();
@@ -56,13 +57,19 @@ export default function HomeDashboard() {
 
       <div className="p-6 space-y-6 pb-24">
         <div className="flex gap-3">
-          <button className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:scale-[100.5%] text-white p-4 rounded-2xl font-semibold flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer">
+          <Link
+            to={"/app/capture"}
+            className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:scale-[100.5%] text-white p-4 rounded-2xl font-semibold flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
+          >
             <Camera size={20} />
             Quick Capture
-          </button>
-          <button className="bg-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+          </Link>
+          <Link
+            to={"/app/stats"}
+            className="bg-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer"
+          >
             <BarChart3 size={20} className="text-gray-600" />
-          </button>
+          </Link>
         </div>
 
         <div className="bg-white rounded-3xl shadow-xl p-8 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100">
