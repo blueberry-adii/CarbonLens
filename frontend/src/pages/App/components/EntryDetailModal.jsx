@@ -17,7 +17,7 @@ export default function EntryDetailModal({
             <h2 className="text-xl font-bold text-gray-800">Meal Details</h2>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-xl transition-colors cursor-pointer"
             >
               <X size={20} />
             </button>
@@ -72,14 +72,14 @@ export default function EntryDetailModal({
           <div className="flex gap-3">
             <button
               onClick={() => onEdit(entry)}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
+              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
               <Edit3 size={18} />
               Edit
             </button>
             <button
               onClick={() => onDelete(entry.id)}
-              className="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
+              className="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
               <Trash2 size={18} />
               Delete

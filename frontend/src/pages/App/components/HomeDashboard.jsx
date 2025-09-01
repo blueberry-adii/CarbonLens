@@ -16,6 +16,7 @@ import { mockWeeklyData, mockCarbonEntries } from "../../../constants";
 
 export default function HomeDashboard() {
   const { user } = useAuth();
+  const [key, setKey] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
 
   const todayCarbon = 7.2;
@@ -26,6 +27,7 @@ export default function HomeDashboard() {
   const handleRefresh = async () => {
     setRefreshing(true);
     await new Promise((resolve) => setTimeout(resolve, 1000));
+    setKey((prev) => prev + 1);
     setRefreshing(false);
   };
 
@@ -38,13 +40,13 @@ export default function HomeDashboard() {
           <button
             key="refresh"
             onClick={handleRefresh}
-            className="p-2 hover:bg-white/20 rounded-xl transition-colors"
+            className="p-2 hover:bg-white/20 rounded-xl transition-colors cursor-pointer"
           >
             <RefreshCw size={20} className={refreshing ? "animate-spin" : ""} />
           </button>,
           <button
             key="notifications"
-            className="p-2 hover:bg-white/20 rounded-xl transition-colors relative"
+            className="p-2 hover:bg-white/20 rounded-xl transition-colors relative cursor-pointer"
           >
             <Bell size={20} />
             <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full"></div>
