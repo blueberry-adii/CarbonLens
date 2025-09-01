@@ -1,8 +1,10 @@
 import { useState, useRef } from "react";
 import { Camera, Upload, Leaf, CheckCircle } from "lucide-react";
 import Header from "./Header";
+import axios from "axios";
 
 export default function CameraCapture() {
+  const [file, setFile] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [results, setResults] = useState(null);
@@ -10,6 +12,7 @@ export default function CameraCapture() {
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
+    setFile(file);
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -21,25 +24,52 @@ export default function CameraCapture() {
   };
 
   const analyzeImage = () => {
+    if (!file) return alert("No file selected");
     setAnalyzing(true);
-    setTimeout(() => {
-      setResults({
-        items: [
-          { name: "Grilled Salmon", carbon: 4.2 },
-          { name: "Quinoa", carbon: 1.8 },
-          { name: "Steamed Broccoli", carbon: 0.7 },
-        ],
-        totalCarbon: 6.7,
-        confidence: 0.92,
-        tips: [
-          "Excellent sustainable choice!",
-          "Salmon is a great protein with lower carbon impact",
-          "Adding more vegetables reduces footprint further",
-        ],
-        comparison: { avgMeal: 12.5, savings: 5.8 },
+    const formData = new FormData();
+    formData.append("image", file);
+    axios
+      .post("http://localhost:5000/api/v1/carbon/analyze", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log("Upload success: ", res.data);
+        setResults({
+          items: res.data.data.breakdown,
+          totalCarbon: res.data.data.totalCarbon,
+          confidence: res.data.data.confidence,
+          tips: res.data.data.tips,
+          comparison: {
+            avgMeal: 12.5,
+            savings: 12.5 - res.data.data.totalCarbon,
+          },
+        });
+      })
+      .catch((e) => console.log(e))
+      .finally(() => {
+        setAnalyzing(false);
       });
-      setAnalyzing(false);
-    }, 3000);
+    // setTimeout(() => {
+    //   setResults({
+    //     items: [
+    //       { name: "Grilled Salmon", carbon: 4.2 },
+    //       { name: "Quinoa", carbon: 1.8 },
+    //       { name: "Steamed Broccoli", carbon: 0.7 },
+    //     ],
+    //     totalCarbon: 6.7,
+    //     confidence: 0.92,
+    //     tips: [
+    //       "Excellent sustainable choice!",
+    //       "Salmon is a great protein with lower carbon impact",
+    //       "Adding more vegetables reduces footprint further",
+    //     ],
+    //     comparison: { avgMeal: 12.5, savings: 5.8 },
+    //   });
+    //   setAnalyzing(false);
+    // }, 3000);
   };
 
   const saveEntry = () => {
@@ -159,10 +189,10 @@ export default function CameraCapture() {
                     className="flex justify-between items-center p-3 bg-gray-50 rounded-xl"
                   >
                     <span className="font-medium text-gray-700">
-                      {item.name}
+                      {item.item}
                     </span>
                     <span className="text-gray-600 font-semibold">
-                      {item.carbon} kg CO₂
+                      {item.carbonValue} kg CO₂
                     </span>
                   </div>
                 ))}

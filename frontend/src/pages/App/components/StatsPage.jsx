@@ -127,17 +127,24 @@ export default function StatsPage() {
                   </div>
                   <div>
                     <div className="font-medium text-gray-800">
-                      {entry.items.map((i) => i.name).join(", ")}
+                      {entry.analysis.detectedItems
+                        .map((i) => i.name)
+                        .join(", ")}
                     </div>
                     <div className="text-sm text-gray-500">
-                      {entry.date} at {entry.time}
+                      {new Date(entry.date).toISOString().split("T")[0]} at{" "}
+                      {new Date(entry.date).toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: "numeric",
+                        hour12: true,
+                      })}
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
                     <div className="font-bold text-gray-800">
-                      {entry.totalCarbon} kg
+                      {entry.analysis.totalCarbon} kg
                     </div>
                     <div className="text-xs text-gray-500">CO₂</div>
                   </div>
