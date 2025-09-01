@@ -31,7 +31,7 @@ export default function StatsPage() {
         actions={[
           <button
             key="filter"
-            className="p-2 hover:bg-white/20 rounded-xl transition-colors"
+            className="p-2 hover:bg-white/20 rounded-xl transition-colors cursor-pointer"
           >
             <Filter size={20} />
           </button>,
@@ -48,7 +48,7 @@ export default function StatsPage() {
                 className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${
                   selectedPeriod === period.id
                     ? "bg-green-600 text-white shadow-lg"
-                    : "text-gray-600 hover:bg-gray-50"
+                    : "text-gray-600 hover:bg-gray-200 cursor-pointer"
                 }`}
               >
                 {period.label}
@@ -101,10 +101,10 @@ export default function StatsPage() {
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold">All Entries</h3>
             <div className="flex gap-2">
-              <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer">
                 <Search size={18} className="text-gray-600" />
               </button>
-              <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer">
                 <Filter size={18} className="text-gray-600" />
               </button>
             </div>
@@ -138,13 +138,13 @@ export default function StatsPage() {
                     <div className="text-xs text-gray-500">CO₂</div>
                   </div>
                   <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
+                    <button className="p-2 hover:bg-blue-100 rounded-lg transition-colors cursor-pointer">
                       <Edit3 size={16} className="text-blue-600" />
                     </button>
-                    <button className="p-2 hover:bg-red-100 rounded-lg transition-colors">
+                    <button className="p-2 hover:bg-red-100 rounded-lg transition-colors cursor-pointer">
                       <Trash2 size={16} className="text-red-600" />
                     </button>
-                    <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer">
                       <Share2 size={16} className="text-gray-600" />
                     </button>
                   </div>

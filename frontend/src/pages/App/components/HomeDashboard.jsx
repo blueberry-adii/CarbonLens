@@ -54,16 +54,15 @@ export default function HomeDashboard() {
 
       <div className="p-6 space-y-6 pb-24">
         <div className="flex gap-3">
-          <button className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white p-4 rounded-2xl font-semibold flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+          <button className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:scale-[100.5%] text-white p-4 rounded-2xl font-semibold flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer">
             <Camera size={20} />
             Quick Capture
           </button>
-          <button className="bg-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+          <button className="bg-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
             <BarChart3 size={20} className="text-gray-600" />
           </button>
         </div>
 
-        {/* Today's Impact */}
         <div className="bg-white rounded-3xl shadow-xl p-8 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100">
           <div className="text-center">
             <div className="text-5xl font-bold text-gray-800 mb-2">
@@ -77,7 +76,6 @@ export default function HomeDashboard() {
           </div>
         </div>
 
-        {/* Quick Stats Grid */}
         <div className="grid grid-cols-2 gap-4">
           <StatsCard
             icon={Target}
@@ -95,11 +93,10 @@ export default function HomeDashboard() {
           />
         </div>
 
-        {/* Weekly Progress Chart */}
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold">Weekly Trend</h3>
-            <button className="text-green-600 text-sm font-medium">
+            <button className="text-green-600 hover:text-green-700 transition-colors ease-in-out text-sm font-medium cursor-pointer">
               View Details
             </button>
           </div>
@@ -119,11 +116,10 @@ export default function HomeDashboard() {
           </div>
         </div>
 
-        {/* Recent Entries */}
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold">Recent Entries</h3>
-            <button className="text-green-600 text-sm font-medium">
+            <button className="text-green-600 text-sm font-medium hover:text-green-700 cursor-pointer transition-colors ease-in-out">
               View All
             </button>
           </div>
@@ -131,7 +127,7 @@ export default function HomeDashboard() {
             {mockCarbonEntries.slice(0, 3).map((entry) => (
               <div
                 key={entry.id}
-                className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+                className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center">
                   <Leaf size={20} className="text-green-600" />

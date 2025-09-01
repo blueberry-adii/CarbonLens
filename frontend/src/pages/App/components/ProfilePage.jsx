@@ -70,7 +70,7 @@ export default function ProfilePage() {
           <button
             key="settings"
             onClick={() => setEditing(!editing)}
-            className="p-2 hover:bg-white/20 rounded-xl transition-colors"
+            className="p-2 hover:bg-white/20 rounded-xl transition-colors cursor-pointer"
           >
             <Settings size={20} />
           </button>,
@@ -96,7 +96,7 @@ export default function ProfilePage() {
                 </span>
               </div>
             </div>
-            <button className="p-2 hover:bg-gray-100 rounded-xl transition-colors">
+            <button className="p-2 hover:bg-gray-100 rounded-xl transition-colors cursor-pointer">
               <Edit3 size={20} className="text-gray-600" />
             </button>
           </div>
@@ -185,13 +185,13 @@ export default function ProfilePage() {
                     onClick={() =>
                       setSettings((prev) => ({ ...prev, [key]: !value }))
                     }
-                    className={`w-12 h-6 rounded-full transition-all duration-300 ${
+                    className={`w-12 h-6 rounded-full transition-all duration-300 cursor-pointer ${
                       value ? "bg-green-500" : "bg-gray-300"
                     }`}
                   >
                     <div
                       className={`w-5 h-5 bg-white rounded-full transition-all duration-300 ${
-                        value ? "translate-x-6" : "translate-x-0.5"
+                        value ? "translate-x-6.5" : "translate-x-0.5"
                       }`}
                     ></div>
                   </button>
@@ -226,18 +226,18 @@ export default function ProfilePage() {
               <span className="text-gray-600">Aug 31, 2024</span>
             </div>
             <div className="pt-4 border-t border-gray-100 space-y-3">
-              <button className="w-full text-left text-gray-700 hover:text-green-600 py-2 font-medium transition-colors">
+              <button className="w-full text-left text-gray-700 hover:text-green-600 py-2 font-medium transition-colors cursor-pointer">
                 Terms of Service
               </button>
-              <button className="w-full text-left text-gray-700 hover:text-green-600 py-2 font-medium transition-colors">
+              <button className="w-full text-left text-gray-700 hover:text-green-600 py-2 font-medium transition-colors cursor-pointer">
                 Privacy Policy
               </button>
-              <button className="w-full text-left text-gray-700 hover:text-green-600 py-2 font-medium transition-colors">
+              <button className="w-full text-left text-gray-700 hover:text-green-600 py-2 font-medium transition-colors cursor-pointer">
                 Contact Support
               </button>
               <button
                 onClick={logout}
-                className="w-full text-left text-red-600 hover:text-red-700 py-2 font-medium transition-colors"
+                className="w-full text-left text-red-600 hover:text-red-700 py-2 font-medium transition-colors cursor-pointer"
               >
                 Sign Out
               </button>

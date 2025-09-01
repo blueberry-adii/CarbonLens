@@ -3,7 +3,7 @@ import { Home, Plus, BarChart3, User, Trophy } from "lucide-react";
 export default Navigation = ({
   currentPage,
   setCurrentPage,
-  unreadNotifications = 2,
+  unreadNotifications = 3,
 }) => {
   const navItems = [
     { id: "home", icon: Home, label: "Home" },

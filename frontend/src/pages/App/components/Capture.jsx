@@ -90,7 +90,7 @@ export default function CameraCapture() {
       <div className="p-6 space-y-6 pb-24">
         {!capturedImage ? (
           <div className="bg-white rounded-3xl shadow-xl p-12 text-center">
-            <div className="w-32 h-32 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-8 hover:scale-110 transition-transform duration-300">
+            <div className="w-32 h-32 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-8">
               <Camera size={48} className="text-green-600" />
             </div>
 
@@ -105,13 +105,13 @@ export default function CameraCapture() {
             <div className="space-y-4">
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl font-semibold flex items-center justify-center gap-3 transition-all duration-300 hover:scale-105 shadow-lg"
+                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl font-semibold flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[101%] cursor-pointer shadow-lg"
               >
                 <Upload size={24} />
                 Choose Photo
               </button>
 
-              <button className="w-full border-2 border-green-600 text-green-600 hover:bg-green-50 px-8 py-4 rounded-2xl font-semibold flex items-center justify-center gap-3 transition-all duration-300">
+              <button className="w-full border-2 border-green-600 text-green-600 hover:bg-green-50 px-8 py-4 rounded-2xl font-semibold flex items-center justify-center gap-3 transition-all duration-300 cursor-pointer">
                 <Camera size={24} />
                 Take Photo
               </button>
@@ -184,13 +184,13 @@ export default function CameraCapture() {
               <div className="flex gap-3">
                 <button
                   onClick={reset}
-                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold transition-colors"
+                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold transition-colors cursor-pointer"
                 >
                   Retake Photo
                 </button>
                 <button
                   onClick={saveEntry}
-                  className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105"
+                  className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 cursor-pointer"
                 >
                   Save Entry
                 </button>
@@ -208,13 +208,13 @@ export default function CameraCapture() {
               <div className="flex gap-3">
                 <button
                   onClick={reset}
-                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold transition-colors"
+                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold transition-colors cursor-pointer"
                 >
                   Retake
                 </button>
                 <button
                   onClick={analyzeImage}
-                  className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105"
+                  className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 cursor-pointer"
                 >
                   Analyze
                 </button>

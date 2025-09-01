@@ -76,10 +76,7 @@ export default function CarbonLensApp() {
           onEdit={handleEditEntry}
         />
       </div>
-      <FloatingActionButton
-        onClick={() => setShowQuickActions(true)}
-        className="animate-pulse"
-      />
+      <FloatingActionButton onClick={() => setShowQuickActions(true)} />
 
       <QuickActionMenu
         isOpen={showQuickActions}

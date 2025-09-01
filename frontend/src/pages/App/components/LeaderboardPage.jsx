@@ -23,7 +23,7 @@ export default function LeaderboardPage() {
         actions={[
           <button
             key="share"
-            className="p-2 hover:bg-white/20 rounded-xl transition-colors"
+            className="p-2 hover:bg-white/20 rounded-xl transition-colors cursor-pointer"
           >
             <Share2 size={20} />
           </button>,
@@ -40,7 +40,7 @@ export default function LeaderboardPage() {
                 className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${
                   selectedPeriod === period.id
                     ? "bg-green-600 text-white shadow-lg"
-                    : "text-gray-600 hover:bg-gray-50"
+                    : "text-gray-600 hover:bg-gray-200 cursor-pointer"
                 }`}
               >
                 {period.label}

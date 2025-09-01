@@ -20,7 +20,7 @@ export default function QuickActionMenu({
         <div className="space-y-3">
           <button
             onClick={onCapture}
-            className="w-full flex items-center gap-4 p-4 bg-green-50 hover:bg-green-100 rounded-xl transition-colors"
+            className="w-full flex items-center gap-4 p-4 bg-green-50 hover:bg-green-100 rounded-xl transition-colors cursor-pointer"
           >
             <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center">
               <Camera size={24} className="text-white" />
@@ -35,7 +35,7 @@ export default function QuickActionMenu({
 
           <button
             onClick={onManualEntry}
-            className="w-full flex items-center gap-4 p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors"
+            className="w-full flex items-center gap-4 p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors cursor-pointer"
           >
             <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
               <Edit3 size={24} className="text-white" />
@@ -50,7 +50,7 @@ export default function QuickActionMenu({
 
           <button
             onClick={onClose}
-            className="w-full py-3 text-gray-600 hover:text-gray-800 font-medium transition-colors"
+            className="w-full py-3 text-gray-600 hover:text-gray-800 font-medium transition-colors cursor-pointer"
           >
             Cancel
           </button>
