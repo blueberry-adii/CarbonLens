@@ -143,13 +143,19 @@ export default function HomeDashboard() {
                 </div>
                 <div className="flex-1">
                   <div className="font-medium text-gray-800">
-                    {entry.items[0].name}
+                    {entry.items[0]}
                   </div>
-                  <div className="text-sm text-gray-500">{entry.time}</div>
+                  <div className="text-sm text-gray-500">
+                    {new Date(entry.date).toLocaleTimeString("en-US", {
+                      hour: "numeric",
+                      minute: "numeric",
+                      hour12: true,
+                    })}
+                  </div>
                 </div>
                 <div className="text-right">
                   <div className="font-bold text-gray-800">
-                    {entry.totalCarbon} kg
+                    {entry.carbon} kg
                   </div>
                   <div className="text-xs text-gray-500">CO₂</div>
                 </div>

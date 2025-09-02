@@ -63,6 +63,8 @@ export function AuthProvider({ children }) {
             getAllEntries(),
           ]);
 
+        console.log(dashboard);
+
         setUser(user);
         setAchievements(achievements);
         setDashboard(dashboard);
