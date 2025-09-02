@@ -41,12 +41,12 @@ export function AuthProvider({ children }) {
     return res.data.data;
   }
 
-  // async function getAllEntries() {
-  //   const res = await axios.get("http://localhost:5000/api/v1/carbon/entries", {
-  //     withCredentials: true,
-  //   });
-  //   return res.data.data;
-  // }
+  async function getAllEntries() {
+    const res = await axios.get("http://localhost:5000/api/v1/carbon/entries", {
+      withCredentials: true,
+    });
+    return res.data.data;
+  }
 
   useEffect(() => {
     async function loadApp() {
@@ -105,6 +105,7 @@ export function AuthProvider({ children }) {
         profile,
         getDashboard,
         getWeeklyTrend,
+        getAllEntries,
       }}
     >
       {children}

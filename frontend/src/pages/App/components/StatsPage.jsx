@@ -10,13 +10,36 @@ import {
 } from "lucide-react";
 import StatsCard from "./StatsCard";
 import Header from "./Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../../utils/AuthContext";
 
 export default function StatsPage() {
-  const { weeklyTrend, profile, dashboard, allEntries } = useAuth();
+  const { getWeeklyTrend, profile, getDashboard, getAllEntries } = useAuth();
+  const [dashboard, setDashboard] = useState(null);
+  const [weeklyTrend, setWeeklyTrend] = useState(null);
+  const [allEntries, setAllEntries] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState("week");
   const [selectedCategory, setSelectedCategory] = useState("all");
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const [dashboard, weeklyTrend, allEntries] = await Promise.all([
+          getDashboard(),
+          getWeeklyTrend(),
+          getAllEntries(),
+        ]);
+
+        setDashboard(dashboard);
+        setWeeklyTrend(weeklyTrend);
+        setAllEntries(allEntries);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    load();
+  }, []);
 
   const periods = [
     { id: "week", label: "Week" },
