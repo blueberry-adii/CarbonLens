@@ -42,9 +42,9 @@ export default function StatsPage() {
   }, []);
 
   const periods = [
+    { id: "today", label: "Today" },
     { id: "week", label: "Week" },
     { id: "month", label: "Month" },
-    { id: "year", label: "Year" },
   ];
 
   return (
@@ -85,18 +85,27 @@ export default function StatsPage() {
           <StatsCard
             icon={TrendingDown}
             title="Carbon Reduced"
-            value={`${Math.max(
-              0,
-              profile?.settings?.carbonGoal - dashboard?.weekly?.carbon
-            )} kg`}
+            value={`${
+              selectedPeriod === "week"
+                ? dashboard?.weekly?.carbonSaved
+                : selectedPeriod === "month"
+                ? dashboard?.monthly?.carbonSaved
+                : dashboard?.today?.carbonSaved
+            } kg`}
             subtitle="vs. baseline"
             color="green"
             trend={-15}
           />
           <StatsCard
             icon={Globe}
-            title="Global Average (Carbon Reduced)"
-            value="12 kg"
+            title="Your Goal (Carbon Reduced)"
+            value={`${
+              selectedPeriod === "week"
+                ? profile?.settings?.carbonGoal
+                : selectedPeriod === "month"
+                ? profile?.settings?.carbonGoal * 30
+                : (profile?.settings?.carbonGoal / 7).toFixed(1)
+            } kg`}
             subtitle="carbon offset"
             color="blue"
             trend={12}
