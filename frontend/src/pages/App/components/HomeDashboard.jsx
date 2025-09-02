@@ -9,6 +9,15 @@ import {
   Leaf,
 } from "lucide-react";
 import StatsCard from "./StatsCard";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+} from "recharts";
 import { useAuth } from "../../../utils/AuthContext";
 import { useEffect, useState } from "react";
 import Header from "./Header";
@@ -132,19 +141,35 @@ export default function HomeDashboard() {
               View Details
             </button>
           </div>
-          <div className="h-56 flex items-end justify-between px-2">
-            {weeklyTrend?.map((day, index) => (
-              <div key={index} className="flex flex-col items-center flex-1">
-                <div className="text-xs text-gray-500 mb-2">{day.entries}</div>
-                <div
-                  className="bg-gradient-to-t from-green-500 to-emerald-400 rounded-t-lg w-6 transition-all duration-500 hover:from-green-600 hover:to-emerald-500"
-                  style={{ height: `${Math.max((day.carbon / 20) * 40, 8)}px` }}
-                ></div>
-                <div className="text-xs text-gray-600 mt-2 font-medium">
-                  {day.dayName}
-                </div>
-              </div>
-            ))}
+          <div className="flex items-end justify-between px-2">
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart
+                data={weeklyTrend ?? []}
+                margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="dayName" />
+                <YAxis />
+                <Tooltip
+                  formatter={(value, name, props) => [
+                    `${value} kg CO₂e`,
+                    "Carbon",
+                  ]}
+                  labelFormatter={(label) => `Day: ${label}`}
+                />
+                <defs>
+                  <linearGradient id="colorCarbon" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#34d399" stopOpacity={1} />{" "}
+                    <stop offset="100%" stopColor="#10b981" stopOpacity={1} />{" "}
+                  </linearGradient>
+                </defs>
+                <Bar
+                  dataKey="carbon"
+                  fill="url(#colorCarbon)"
+                  radius={[6, 6, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
 

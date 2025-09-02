@@ -8,6 +8,16 @@ import {
   Trash2,
   Share2,
 } from "lucide-react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+  LabelList,
+} from "recharts";
 import StatsCard from "./StatsCard";
 import Header from "./Header";
 import { useEffect, useState } from "react";
@@ -114,22 +124,60 @@ export default function StatsPage() {
 
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <h3 className="text-lg font-semibold mb-4">Carbon Trend</h3>
-          <div className="h-72 bg-gradient-to-t from-green-50 to-white rounded-xl flex items-end justify-between px-4 py-4">
-            {weeklyTrend?.map((day, index) => (
-              <div key={index} className="flex flex-col items-center">
-                <div className="text-xs text-gray-500 mb-2">{day.carbon}kg</div>
-                <div
-                  className="bg-gradient-to-t from-green-500 to-emerald-400 rounded-t-lg w-8 transition-all duration-700 delay-75"
-                  style={{
-                    height: `${(day.carbon / 20) * 120 + 5}px`,
-                    animationDelay: `${index * 100}ms`,
+          <div className="bg-gradient-to-t from-green-50 to-white rounded-xl flex items-end justify-between px-4 py-4">
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart
+                data={weeklyTrend ?? []}
+                margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="dayName" />
+                <YAxis />
+                <Tooltip
+                  content={({ active, payload, label }) => {
+                    if (active && payload && payload.length) {
+                      const { carbon } = payload[0].payload;
+                      return (
+                        <div className="bg-white p-2 rounded shadow text-sm">
+                          <p>
+                            <b>{label}</b>
+                          </p>
+                          <p>{carbon} kg CO₂e</p>
+                        </div>
+                      );
+                    }
+                    return null;
                   }}
-                ></div>
-                <span className="text-xs text-gray-600 mt-2 font-medium">
-                  {day.dayName}
-                </span>
-              </div>
-            ))}
+                />
+
+                <defs>
+                  <linearGradient
+                    id="carbonGradient"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
+                    <stop offset="0%" stopColor="#34d399" />
+                    <stop offset="100%" stopColor="#10b981" />
+                  </linearGradient>
+                </defs>
+
+                <Bar
+                  dataKey="carbon"
+                  fill="url(#carbonGradient)"
+                  radius={[8, 8, 0, 0]}
+                >
+                  <LabelList
+                    dataKey="carbon"
+                    position="top"
+                    formatter={(val) => `${val}kg`}
+                    fill="#6b7280"
+                    fontSize={12}
+                  />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
