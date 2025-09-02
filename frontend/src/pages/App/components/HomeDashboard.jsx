@@ -132,13 +132,13 @@ export default function HomeDashboard() {
               View Details
             </button>
           </div>
-          <div className="h-32 flex items-end justify-between px-2">
+          <div className="h-56 flex items-end justify-between px-2">
             {weeklyTrend?.map((day, index) => (
               <div key={index} className="flex flex-col items-center flex-1">
                 <div className="text-xs text-gray-500 mb-2">{day.entries}</div>
                 <div
                   className="bg-gradient-to-t from-green-500 to-emerald-400 rounded-t-lg w-6 transition-all duration-500 hover:from-green-600 hover:to-emerald-500"
-                  style={{ height: `${Math.max((day.carbon / 20) * 80, 8)}px` }}
+                  style={{ height: `${Math.max((day.carbon / 20) * 40, 8)}px` }}
                 ></div>
                 <div className="text-xs text-gray-600 mt-2 font-medium">
                   {day.dayName}

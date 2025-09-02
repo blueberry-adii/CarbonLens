@@ -114,7 +114,7 @@ export default function StatsPage() {
 
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <h3 className="text-lg font-semibold mb-4">Carbon Trend</h3>
-          <div className="h-48 bg-gradient-to-t from-green-50 to-white rounded-xl flex items-end justify-between px-4 py-4">
+          <div className="h-72 bg-gradient-to-t from-green-50 to-white rounded-xl flex items-end justify-between px-4 py-4">
             {weeklyTrend?.map((day, index) => (
               <div key={index} className="flex flex-col items-center">
                 <div className="text-xs text-gray-500 mb-2">{day.carbon}kg</div>
