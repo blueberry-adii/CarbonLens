@@ -23,6 +23,9 @@ exports.analyzeMeal = asyncHandler(async (req, res, next) => {
     carbonAnalysis.totalCarbon
   );
 
+  const carbonSaved =
+    2.25 * (2.25 / (carbonAnalysis.totalCarbon || 2.25)) ** 0.5;
+
   const processingTime = Date.now() - startTime;
 
   const carbonEntry = new CarbonEntry({
@@ -41,6 +44,7 @@ exports.analyzeMeal = asyncHandler(async (req, res, next) => {
         category: item.category || "other",
       })),
       totalCarbon: carbonAnalysis.totalCarbon,
+      carbonSaved: carbonSaved,
       carbonBreakdown: carbonAnalysis.breakdown,
       processingTime,
       aiConfidence:

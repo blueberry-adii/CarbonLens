@@ -17,6 +17,7 @@ exports.getDashboardStats = asyncHandler(async (req, res) => {
           $group: {
             _id: null,
             totalCarbon: { $sum: "$analysis.totalCarbon" },
+            carbonSaved: { $sum: "$analysis.carbonSaved" },
             count: { $sum: 1 },
           },
         },
@@ -28,6 +29,7 @@ exports.getDashboardStats = asyncHandler(async (req, res) => {
           $group: {
             _id: null,
             totalCarbon: { $sum: "$analysis.totalCarbon" },
+            carbonSaved: { $sum: "$analysis.carbonSaved" },
             count: { $sum: 1 },
           },
         },
@@ -39,6 +41,7 @@ exports.getDashboardStats = asyncHandler(async (req, res) => {
           $group: {
             _id: null,
             totalCarbon: { $sum: "$analysis.totalCarbon" },
+            carbonSaved: { $sum: "$analysis.carbonSaved" },
             count: { $sum: 1 },
           },
         },
@@ -53,15 +56,18 @@ exports.getDashboardStats = asyncHandler(async (req, res) => {
   const dashboard = {
     today: {
       carbon: todayStats[0]?.totalCarbon || 0,
+      carbonSaved: todayStats[0]?.carbonSaved || 0,
       entries: todayStats[0]?.count || 0,
     },
     weekly: {
       carbon: weeklyStats[0]?.totalCarbon || 0,
+      carbonSaved: todayStats[0]?.carbonSaved || 0,
       entries: weeklyStats[0]?.count || 0,
       average: weeklyStats[0] ? (weeklyStats[0].totalCarbon / 7).toFixed(1) : 0,
     },
     monthly: {
       carbon: monthlyStats[0]?.totalCarbon || 0,
+      carbonSaved: todayStats[0]?.carbonSaved || 0,
       entries: monthlyStats[0]?.count || 0,
     },
     recentEntries: recentEntries.map((entry) => ({

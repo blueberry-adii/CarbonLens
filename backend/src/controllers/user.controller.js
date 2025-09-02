@@ -84,6 +84,7 @@ exports.getLeaderboard = asyncHandler(async (req, res) => {
       $group: {
         _id: "$userId",
         totalCarbon: { $sum: "$analysis.totalCarbon" },
+        carbonSaved: { $sum: "$analysis.carbonSaved" },
         entryCount: { $sum: 1 },
       },
     },
@@ -102,8 +103,8 @@ exports.getLeaderboard = asyncHandler(async (req, res) => {
       $project: {
         name: "$user.name",
         totalCarbon: 1,
+        carbonSaved: 1,
         entryCount: 1,
-        carbonSaved: { $subtract: [50, "$totalCarbon"] },
       },
     },
     {
@@ -118,7 +119,7 @@ exports.getLeaderboard = asyncHandler(async (req, res) => {
     rank: index + 1,
     name: entry.name,
     totalCarbon: entry.totalCarbon,
-    carbonSaved: Math.max(0, entry.carbonSaved),
+    carbonSaved: entry.carbonSaved,
     entryCount: entry.entryCount,
     isCurrentUser: entry._id.equals(req.user._id),
   }));

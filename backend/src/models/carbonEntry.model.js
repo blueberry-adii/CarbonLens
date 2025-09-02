@@ -26,6 +26,10 @@ const carbonEntrySchema = new mongoose.Schema(
         type: Number,
         required: true,
       },
+      carbonSaved: {
+        type: Number,
+        required: true,
+      },
       carbonBreakdown: [
         {
           item: String,
