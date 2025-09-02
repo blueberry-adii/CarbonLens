@@ -3,16 +3,16 @@ import { useAuth } from "./AuthContext";
 import { Leaf } from "lucide-react";
 
 export function ProtectedRoute({ children }) {
-  const { user, loading } = useAuth();
+  const { profile, loading } = useAuth();
   if (loading) return <LoadingPage />;
-  if (!user) return <Navigate to="/login" replace />;
+  if (!profile) return <Navigate to="/login" replace />;
   return children;
 }
 
 export function PublicRoute({ children }) {
-  const { user, loading } = useAuth();
+  const { profile, loading } = useAuth();
   if (loading) return <LoadingPage />;
-  if (user) return <Navigate to="/app" replace />;
+  if (profile) return <Navigate to="/app" replace />;
   return children;
 }
 

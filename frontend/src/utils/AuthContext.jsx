@@ -25,21 +25,21 @@ export function AuthProvider({ children }) {
     return res.data.data;
   }
 
-  // async function getDashboard() {
-  //   const res = await axios.get(
-  //     "http://localhost:5000/api/v1/analytics/dashboard",
-  //     { withCredentials: true }
-  //   );
-  //   return res.data.data;
-  // }
+  async function getDashboard() {
+    const res = await axios.get(
+      "http://localhost:5000/api/v1/analytics/dashboard",
+      { withCredentials: true }
+    );
+    return res.data.data;
+  }
 
-  // async function getWeeklyTrend() {
-  //   const res = await axios.get(
-  //     "http://localhost:5000/api/v1/analytics/weekly-trend",
-  //     { withCredentials: true }
-  //   );
-  //   return res.data.data;
-  // }
+  async function getWeeklyTrend() {
+    const res = await axios.get(
+      "http://localhost:5000/api/v1/analytics/weekly-trend",
+      { withCredentials: true }
+    );
+    return res.data.data;
+  }
 
   // async function getAllEntries() {
   //   const res = await axios.get("http://localhost:5000/api/v1/carbon/entries", {
@@ -103,6 +103,8 @@ export function AuthProvider({ children }) {
         setSettings,
         achievements,
         profile,
+        getDashboard,
+        getWeeklyTrend,
       }}
     >
       {children}

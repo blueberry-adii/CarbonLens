@@ -10,12 +10,14 @@ import {
 } from "lucide-react";
 import StatsCard from "./StatsCard";
 import { useAuth } from "../../../utils/AuthContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 
 export default function HomeDashboard() {
-  const { profile, dashboard, weeklyTrend } = useAuth();
+  const { profile, getDashboard, getWeeklyTrend } = useAuth();
+  const [dashboard, setDashboard] = useState(null);
+  const [weeklyTrend, setWeeklyTrend] = useState(null);
   const [key, setKey] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -24,6 +26,24 @@ export default function HomeDashboard() {
   const monthlyTotal = dashboard?.monthly?.carbon;
   const carbonSaved = profile?.stats?.carbonSaved;
   const carbonEntries = dashboard?.recentEntries;
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const [dashboard, weeklyTrend] = await Promise.all([
+          getDashboard(),
+          getWeeklyTrend(),
+        ]);
+
+        setDashboard(dashboard);
+        setWeeklyTrend(weeklyTrend);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    load();
+  }, []);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -113,7 +133,7 @@ export default function HomeDashboard() {
             </button>
           </div>
           <div className="h-32 flex items-end justify-between px-2">
-            {weeklyTrend.map((day, index) => (
+            {weeklyTrend?.map((day, index) => (
               <div key={index} className="flex flex-col items-center flex-1">
                 <div className="text-xs text-gray-500 mb-2">{day.entries}</div>
                 <div
@@ -136,7 +156,7 @@ export default function HomeDashboard() {
             </button>
           </div>
           <div className="space-y-3">
-            {carbonEntries.slice(0, 3).map((entry) => (
+            {carbonEntries?.slice(0, 3).map((entry) => (
               <div
                 key={entry.id}
                 className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
