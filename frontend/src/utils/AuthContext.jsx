@@ -4,19 +4,9 @@ import axios from "axios";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [allEntries, setAllEntries] = useState(null);
-  const [weeklyTrend, setWeeklyTrend] = useState(null);
-  const [dashboard, setDashboard] = useState(null);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(null);
   const [achievements, setAchievements] = useState(null);
-
-  async function getUser() {
-    const res = await axios.get("http://localhost:5000/api/v1/auth/me", {
-      withCredentials: true,
-    });
-    return res.data.data;
-  }
+  const [loading, setLoading] = useState(true);
 
   async function getAchievements() {
     const res = await axios.get(
@@ -28,48 +18,46 @@ export function AuthProvider({ children }) {
     return res.data.data;
   }
 
-  async function getDashboard() {
-    const res = await axios.get(
-      "http://localhost:5000/api/v1/analytics/dashboard",
-      { withCredentials: true }
-    );
-    return res.data.data;
-  }
-
-  async function getWeeklyTrend() {
-    const res = await axios.get(
-      "http://localhost:5000/api/v1/analytics/weekly-trend",
-      { withCredentials: true }
-    );
-    return res.data.data;
-  }
-
-  async function getAllEntries() {
-    const res = await axios.get("http://localhost:5000/api/v1/carbon/entries", {
+  async function getProfile() {
+    const res = await axios.get("http://localhost:5000/api/v1/users/profile", {
       withCredentials: true,
     });
     return res.data.data;
   }
 
+  // async function getDashboard() {
+  //   const res = await axios.get(
+  //     "http://localhost:5000/api/v1/analytics/dashboard",
+  //     { withCredentials: true }
+  //   );
+  //   return res.data.data;
+  // }
+
+  // async function getWeeklyTrend() {
+  //   const res = await axios.get(
+  //     "http://localhost:5000/api/v1/analytics/weekly-trend",
+  //     { withCredentials: true }
+  //   );
+  //   return res.data.data;
+  // }
+
+  // async function getAllEntries() {
+  //   const res = await axios.get("http://localhost:5000/api/v1/carbon/entries", {
+  //     withCredentials: true,
+  //   });
+  //   return res.data.data;
+  // }
+
   useEffect(() => {
     async function loadApp() {
       try {
-        const [user, achievements, dashboard, weeklyTrend, allEntries] =
-          await Promise.all([
-            getUser(),
-            getAchievements(),
-            getDashboard(),
-            getWeeklyTrend(),
-            getAllEntries(),
-          ]);
+        const [profile, achievements] = await Promise.all([
+          getProfile(),
+          getAchievements(),
+        ]);
 
-        console.log(dashboard);
-
-        setUser(user);
+        setProfile(profile);
         setAchievements(achievements);
-        setDashboard(dashboard);
-        setWeeklyTrend(weeklyTrend);
-        setAllEntries(allEntries);
       } catch (e) {
         console.error(e);
       } finally {
@@ -88,7 +76,7 @@ export function AuthProvider({ children }) {
         { withCredentials: true }
       )
       .then((res) => {
-        setUser((prev) => {
+        setProfile((prev) => {
           return { ...prev, settings: res.data.data };
         });
       });
@@ -102,7 +90,7 @@ export function AuthProvider({ children }) {
         { withCredentials: true }
       )
       .then((res) => {
-        setUser(null);
+        setProfile(null);
         window.location.reload();
       });
   }
@@ -110,15 +98,11 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
-        user,
-        setUser,
         loading,
         logout,
         setSettings,
         achievements,
-        dashboard,
-        weeklyTrend,
-        allEntries,
+        profile,
       }}
     >
       {children}

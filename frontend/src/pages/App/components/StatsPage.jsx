@@ -14,7 +14,7 @@ import { useState } from "react";
 import { useAuth } from "../../../utils/AuthContext";
 
 export default function StatsPage() {
-  const { weeklyTrend, user, dashboard, allEntries } = useAuth();
+  const { weeklyTrend, profile, dashboard, allEntries } = useAuth();
   const [selectedPeriod, setSelectedPeriod] = useState("week");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
@@ -64,7 +64,7 @@ export default function StatsPage() {
             title="Carbon Reduced"
             value={`${Math.max(
               0,
-              user.settings.carbonGoal - dashboard.weekly.carbon
+              profile.settings.carbonGoal - dashboard.weekly.carbon
             )} kg`}
             subtitle="vs. baseline"
             color="green"

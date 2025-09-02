@@ -5,7 +5,7 @@ import { Share2 } from "lucide-react";
 import { mockLeaderboard } from "../../../constants";
 
 export default function LeaderboardPage() {
-  const { user } = useAuth();
+  const { profile } = useAuth();
   const [selectedPeriod, setSelectedPeriod] = useState("week");
   const [loading, setLoading] = useState(false);
 
@@ -54,14 +54,14 @@ export default function LeaderboardPage() {
             <div>
               <div className="text-lg font-medium opacity-90">Your Rank</div>
               <div className="text-3xl font-bold">
-                #{user?.stats?.rank || 3}
+                #{profile?.stats?.rank || 3}
               </div>
               <div className="text-sm opacity-75">out of 12,847 users</div>
             </div>
             <div className="text-right">
               <div className="text-lg font-medium opacity-90">Carbon Saved</div>
               <div className="text-2xl font-bold">
-                {user?.stats?.carbonSaved || 65.3} kg
+                {profile?.stats?.carbonSaved || 65.3} kg
               </div>
               <div className="text-sm opacity-75">this {selectedPeriod}</div>
             </div>

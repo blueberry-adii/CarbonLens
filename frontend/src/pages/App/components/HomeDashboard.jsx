@@ -15,14 +15,14 @@ import Header from "./Header";
 import { Link } from "react-router-dom";
 
 export default function HomeDashboard() {
-  const { user, dashboard, weeklyTrend } = useAuth();
+  const { profile, dashboard, weeklyTrend } = useAuth();
   const [key, setKey] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
 
   const todayCarbon = dashboard?.today?.carbon;
   const weeklyAvg = dashboard?.weekly?.average;
   const monthlyTotal = dashboard?.monthly?.carbon;
-  const carbonSaved = user?.stats?.carbonSaved;
+  const carbonSaved = profile?.stats?.carbonSaved;
   const carbonEntries = dashboard?.recentEntries;
 
   const handleRefresh = async () => {
@@ -35,7 +35,7 @@ export default function HomeDashboard() {
   return (
     <div className="bg-gray-50 min-h-screen">
       <Header
-        title={`Welcome back, ${user?.name?.split(" ")[0] || "User"}!`}
+        title={`Welcome back, ${profile?.name?.split(" ")[0] || "User"}!`}
         subtitle="Your sustainable journey continues"
         actions={[
           <button
@@ -96,7 +96,10 @@ export default function HomeDashboard() {
           <StatsCard
             icon={Award}
             title="Carbon Saved"
-            value={`${Math.max(0, user.settings.carbonGoal - monthlyTotal)} kg`}
+            value={`${Math.max(
+              0,
+              profile.settings.carbonGoal - monthlyTotal
+            )} kg`}
             subtitle="This month"
             color="purple"
           />

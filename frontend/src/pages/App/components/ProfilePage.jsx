@@ -4,8 +4,8 @@ import { Settings, Edit3 } from "lucide-react";
 import Header from "./Header";
 
 export default function ProfilePage() {
-  const { user, logout, setSettings, achievements } = useAuth();
-  const settings = user.settings;
+  const { profile, logout, setSettings, achievements } = useAuth();
+  const settings = profile.settings;
   const [editing, setEditing] = useState(false);
 
   return (
@@ -28,11 +28,13 @@ export default function ProfilePage() {
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <div className="flex items-center gap-4 mb-6">
             <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center text-3xl">
-              {user?.avatar || "🌱"}
+              {profile?.profile?.avatar || "🌱"}
             </div>
             <div className="flex-1">
-              <h2 className="text-2xl font-bold text-gray-800">{user?.name}</h2>
-              <p className="text-gray-600">{user?.email}</p>
+              <h2 className="text-2xl font-bold text-gray-800">
+                {profile?.name}
+              </h2>
+              <p className="text-gray-600">{profile?.email}</p>
               <div className="flex items-center gap-4 mt-2">
                 <span className="text-sm text-gray-500">
                   Member since Aug 2025
@@ -51,19 +53,19 @@ export default function ProfilePage() {
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-4 bg-green-50 rounded-xl">
               <div className="text-2xl font-bold text-green-600">
-                {user?.stats?.totalEntries}
+                {profile?.stats?.totalEntries}
               </div>
               <div className="text-sm text-gray-600">Meals Tracked</div>
             </div>
             <div className="text-center p-4 bg-blue-50 rounded-xl">
               <div className="text-2xl font-bold text-blue-600">
-                {user?.stats?.carbonSaved}
+                {profile?.stats?.carbonSaved}
               </div>
               <div className="text-sm text-gray-600">CO₂ Saved (kg)</div>
             </div>
             <div className="text-center p-4 bg-purple-50 rounded-xl">
               <div className="text-2xl font-bold text-purple-600">
-                {user?.stats?.streak?.current}
+                {profile?.stats?.streak?.current}
               </div>
               <div className="text-sm text-gray-600">Day Streak</div>
             </div>
