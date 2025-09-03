@@ -95,13 +95,13 @@ export default function StatsPage() {
           <StatsCard
             icon={TrendingDown}
             title="Carbon Reduced"
-            value={`${
-              selectedPeriod === "week"
+            value={`${(
+              (selectedPeriod === "week"
                 ? dashboard?.weekly?.carbonSaved
                 : selectedPeriod === "month"
                 ? dashboard?.monthly?.carbonSaved
-                : dashboard?.today?.carbonSaved
-            } kg`}
+                : dashboard?.today?.carbonSaved) ?? 0
+            ).toFixed(2)} kg`}
             subtitle="vs. baseline"
             color="green"
             trend={-15}
@@ -207,7 +207,7 @@ export default function StatsPage() {
                   </div>
                   <div>
                     <div className="font-medium text-gray-800">
-                      {entry.analysis.detectedItems
+                      {entry?.analysis?.detectedItems
                         .map((i) => i.name)
                         .join(", ")}
                     </div>

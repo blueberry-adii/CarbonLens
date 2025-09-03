@@ -1,5 +1,6 @@
 import {
   TrendingDown,
+  TrendingUp,
   RefreshCw,
   Bell,
   Camera,
@@ -32,8 +33,11 @@ export default function HomeDashboard() {
 
   const todayCarbon = dashboard?.today?.carbon;
   const weeklyAvg = dashboard?.weekly?.average;
-  const monthlyTotal = dashboard?.monthly?.carbon;
-  const carbonSaved = profile?.stats?.carbonSaved;
+  const percentage = (
+    (todayCarbon > weeklyAvg
+      ? ((todayCarbon - weeklyAvg) * 100) / weeklyAvg
+      : ((weeklyAvg - todayCarbon) * 100) / weeklyAvg) ?? 0
+  ).toFixed(0);
   const carbonEntries = dashboard?.recentEntries;
 
   useEffect(() => {
@@ -104,12 +108,23 @@ export default function HomeDashboard() {
         <div className="bg-white rounded-3xl shadow-xl p-8 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100">
           <div className="text-center">
             <div className="text-5xl font-bold text-gray-800 mb-2">
-              {todayCarbon} kg
+              {todayCarbon ?? 0} kg
             </div>
             <div className="text-gray-600 mb-4">Today's Carbon Impact</div>
-            <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
-              <TrendingDown size={16} />
-              23% below weekly average
+            <div
+              className={`inline-flex items-center gap-2  ${
+                todayCarbon > weeklyAvg
+                  ? "bg-red-100 text-red-600"
+                  : "bg-green-100 text-green-800"
+              } px-4 py-2 rounded-full text-sm font-medium`}
+            >
+              {todayCarbon > weeklyAvg ? (
+                <TrendingUp size={16} />
+              ) : (
+                <TrendingDown size={16} />
+              )}
+              {percentage}% {todayCarbon > weeklyAvg ? "above" : "below"} weekly
+              average
             </div>
           </div>
         </div>
@@ -118,17 +133,18 @@ export default function HomeDashboard() {
           <StatsCard
             icon={Target}
             title="Weekly Average"
-            value={`${weeklyAvg} kg`}
+            value={`${weeklyAvg ?? 0} kg`}
             trend={-12}
             color="blue"
           />
           <StatsCard
             icon={Award}
             title="Carbon Saved"
-            value={`${Math.max(
-              0,
-              profile.settings.carbonGoal - monthlyTotal
-            )} kg`}
+            value={`${
+              dashboard?.monthly.carbonSaved
+                ? dashboard?.monthly.carbonSaved.toFixed(2)
+                : 0
+            } kg`}
             subtitle="This month"
             color="purple"
           />
@@ -137,9 +153,12 @@ export default function HomeDashboard() {
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold">Weekly Trend</h3>
-            <button className="text-green-600 hover:text-green-700 transition-colors ease-in-out text-sm font-medium cursor-pointer">
+            <Link
+              to={"/app/stats"}
+              className="text-green-600 hover:text-green-700 transition-colors ease-in-out text-sm font-medium cursor-pointer"
+            >
               View Details
-            </button>
+            </Link>
           </div>
           <div className="flex items-end justify-between px-2">
             <ResponsiveContainer width="100%" height={300}>
@@ -152,7 +171,7 @@ export default function HomeDashboard() {
                 <YAxis />
                 <Tooltip
                   formatter={(value, name, props) => [
-                    `${value} kg CO₂e`,
+                    `${value ?? 0} kg CO₂e`,
                     "Carbon",
                   ]}
                   labelFormatter={(label) => `Day: ${label}`}
@@ -176,9 +195,12 @@ export default function HomeDashboard() {
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold">Recent Entries</h3>
-            <button className="text-green-600 text-sm font-medium hover:text-green-700 cursor-pointer transition-colors ease-in-out">
+            <Link
+              to={"/app/stats"}
+              className="text-green-600 text-sm font-medium hover:text-green-700 cursor-pointer transition-colors ease-in-out"
+            >
               View All
-            </button>
+            </Link>
           </div>
           <div className="space-y-3">
             {carbonEntries?.slice(0, 3).map((entry) => (

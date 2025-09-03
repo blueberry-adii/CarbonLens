@@ -6,7 +6,7 @@ exports.getDashboardStats = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const now = new Date();
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const weekStart = new Date(now.setDate(now.getDate() - now.getDay()));
+  const weekStart = new Date(now.setDate(now.getDate() - now.getDay() + 1));
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
   const [todayStats, weeklyStats, monthlyStats, recentEntries] =
@@ -61,13 +61,13 @@ exports.getDashboardStats = asyncHandler(async (req, res) => {
     },
     weekly: {
       carbon: weeklyStats[0]?.totalCarbon || 0,
-      carbonSaved: todayStats[0]?.carbonSaved || 0,
+      carbonSaved: weeklyStats[0]?.carbonSaved || 0,
       entries: weeklyStats[0]?.count || 0,
       average: weeklyStats[0] ? (weeklyStats[0].totalCarbon / 7).toFixed(1) : 0,
     },
     monthly: {
       carbon: monthlyStats[0]?.totalCarbon || 0,
-      carbonSaved: todayStats[0]?.carbonSaved || 0,
+      carbonSaved: weeklyStats[0]?.carbonSaved || 0,
       entries: monthlyStats[0]?.count || 0,
     },
     recentEntries: recentEntries.map((entry) => ({
