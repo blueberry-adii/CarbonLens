@@ -33,11 +33,14 @@ export default function HomeDashboard() {
 
   const todayCarbon = dashboard?.today?.carbon;
   const weeklyAvg = dashboard?.weekly?.average;
-  const percentage = (
-    (todayCarbon > weeklyAvg
-      ? ((todayCarbon - weeklyAvg) * 100) / weeklyAvg
-      : ((weeklyAvg - todayCarbon) * 100) / weeklyAvg) ?? 0
-  ).toFixed(0);
+  const percentage =
+    weeklyAvg !== 0
+      ? (
+          (todayCarbon > weeklyAvg
+            ? ((todayCarbon - weeklyAvg) * 100) / weeklyAvg
+            : ((weeklyAvg - todayCarbon) * 100) / weeklyAvg) ?? 0
+        ).toFixed(0)
+      : 0;
   const carbonEntries = dashboard?.recentEntries;
 
   useEffect(() => {

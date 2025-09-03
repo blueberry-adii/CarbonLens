@@ -10,6 +10,8 @@ exports.analyzeMeal = asyncHandler(async (req, res, next) => {
   if (!req.file) throw new ApiError(400, "Image file is required");
 
   const startTime = Date.now();
+  const today = new Date(startTime);
+  const todayStr = today.toISOString().split("T")[0];
 
   console.log("🔍 Analyzing image with AI...");
   const detectedItems = await aiService.analyzeImage(req.file.path);
@@ -60,10 +62,40 @@ exports.analyzeMeal = asyncHandler(async (req, res, next) => {
 
   await carbonEntry.save();
 
+  const user = await User.findById(req.user._id);
+  let currentStreakInc = 0;
+  let longestStreakInc = 0;
+  if (user.stats.streak.lastEntry) {
+    const lastEntryStr = new Date(user.stats.lastEntry)
+      .toISOString()
+      .split("T")[0];
+    if (
+      Number(lastEntryStr.slice(0, 4)) <= Number(todayStr.slice(0, 4)) &&
+      Number(lastEntryStr.slice(5, 7)) <= Number(todayStr.slice(5, 7)) &&
+      Number(lastEntryStr.slice(8, 10)) < Number(todayStr.slice(8, 10))
+    ) {
+      currentStreakInc = 1;
+    }
+  } else {
+    currentStreakInc = 1;
+  }
+  if (
+    user.stats.streak.current + currentStreakInc >
+    user.stats.streak.longest
+  ) {
+    longestStreakInc = 1;
+  }
+
   await User.findByIdAndUpdate(req.user._id, {
+    $set: {
+      "stats.streak.lastEntry": today,
+    },
     $inc: {
       "stats.totalEntries": 1,
       "stats.totalCarbonTracked": carbonAnalysis.totalCarbon,
+      "stats.carbonSaved": carbonSaved,
+      "stats.streak.current": currentStreakInc,
+      "stats.streak.longest": longestStreakInc,
     },
   });
 
@@ -76,6 +108,7 @@ exports.analyzeMeal = asyncHandler(async (req, res, next) => {
         entryId: carbonEntry._id,
         detectedItems: detectedItems.map((item) => item.name),
         totalCarbon: carbonAnalysis.totalCarbon,
+        carbonSaved: carbonSaved,
         breakdown: carbonAnalysis.breakdown,
         tips: insights.tips,
         alternatives: insights.alternatives,

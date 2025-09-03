@@ -40,6 +40,7 @@ export default function StatsPage() {
           getAllEntries(),
         ]);
 
+        console.log(profile);
         setDashboard(dashboard);
         setWeeklyTrend(weeklyTrend);
         setAllEntries(allEntries);

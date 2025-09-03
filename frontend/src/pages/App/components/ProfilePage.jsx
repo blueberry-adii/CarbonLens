@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../../utils/AuthContext";
-import { Settings, Edit3 } from "lucide-react";
+import { Settings, Edit3, Flame } from "lucide-react";
 import Header from "./Header";
 
 export default function ProfilePage() {
@@ -50,24 +50,45 @@ export default function ProfilePage() {
             </button>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-4 max-[760px]:grid-cols-2 gap-4">
             <div className="text-center p-4 bg-green-50 rounded-xl">
               <div className="text-2xl font-bold text-green-600">
                 {profile?.stats?.totalEntries}
               </div>
               <div className="text-sm text-gray-600">Meals Tracked</div>
             </div>
+            <div className="text-center p-4 bg-purple-50 rounded-xl">
+              <div
+                className={`flex justify-center items-center gap-2 text-2xl font-bold ${
+                  profile?.stats?.streak?.current
+                    ? "text-purple-600"
+                    : "text-gray-400"
+                } `}
+              >
+                {profile?.stats?.streak?.current}{" "}
+                <div
+                  className={
+                    profile?.stats?.streak?.current
+                      ? "text-amber-500 fill-amber-400"
+                      : "text-gray-400 fill-gray-300"
+                  }
+                >
+                  <Flame size={24} fill="" />
+                </div>
+              </div>
+              <div className="text-sm text-gray-600">Current Streak</div>
+            </div>
             <div className="text-center p-4 bg-blue-50 rounded-xl">
               <div className="text-2xl font-bold text-blue-600">
-                {profile?.stats?.carbonSaved}
+                {profile?.stats?.streak?.longest}
               </div>
-              <div className="text-sm text-gray-600">CO₂ Saved (kg)</div>
+              <div className="text-sm text-gray-600">Longest Streak</div>
             </div>
-            <div className="text-center p-4 bg-purple-50 rounded-xl">
-              <div className="text-2xl font-bold text-purple-600">
-                {profile?.stats?.streak?.current}
+            <div className="text-center p-4 bg-red-50 rounded-xl">
+              <div className="text-2xl font-bold text-red-600">
+                {profile?.stats?.totalCarbonTracked}
               </div>
-              <div className="text-sm text-gray-600">Day Streak</div>
+              <div className="text-sm text-gray-600">CO₂ Emitted (kg)</div>
             </div>
           </div>
         </div>
