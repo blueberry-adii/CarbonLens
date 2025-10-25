@@ -4,7 +4,7 @@ class CarbonCalculator {
   constructor() {
     this.fallbackData = {
       beef: 27.0,
-      "beef burger": 15.2,
+      burger: 15.2,
       hamburger: 15.2,
       chicken: 6.9,
       "chicken breast": 5.7,

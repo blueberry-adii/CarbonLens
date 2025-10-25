@@ -15,7 +15,7 @@ const mockCarbonEntries = [
   {
     id: 2,
     items: [
-      { name: "Beef Burger", carbon: 8.5 },
+      { name: "Burger", carbon: 8.5 },
       { name: "French Fries", carbon: 2.3 },
     ],
     totalCarbon: 10.8,

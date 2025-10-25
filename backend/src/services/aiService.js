@@ -105,7 +105,7 @@ class AIService {
 
   getMockAnalysis() {
     const mockItems = [
-      { name: "beef burger", confidence: 0.95, category: "meat" },
+      { name: "burger", confidence: 0.95, category: "meat" },
       { name: "french fries", confidence: 0.87, category: "processed" },
       { name: "soda", confidence: 0.82, category: "beverages" },
     ];

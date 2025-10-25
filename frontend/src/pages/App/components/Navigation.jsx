@@ -1,7 +1,7 @@
 import { Home, Plus, BarChart3, User, Trophy } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
-export default Navigation = ({
+const Navigation = ({
   currentPage,
   setCurrentPage,
   unreadNotifications = 3,
@@ -45,3 +45,5 @@ export default Navigation = ({
     </div>
   );
 };
+
+export default Navigation;

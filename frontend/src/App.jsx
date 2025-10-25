@@ -6,7 +6,7 @@ import { ProtectedRoute, PublicRoute } from "./utils/RouteWrappers";
 import HomeDashboard from "./pages/App/components/HomeDashboard";
 import CameraCapture from "./pages/App/components/Capture";
 import StatsPage from "./pages/App/components/StatsPage";
-import LeaderboardPage from "./pages/App/components/LeaderBoardPage";
+import LeaderboardPage from "./pages/App/components/LeaderboardPage";
 import ProfilePage from "./pages/App/components/ProfilePage";
 
 function App() {
