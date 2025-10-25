@@ -22,7 +22,7 @@ connectDB();
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:5173",
+    origin: "http://localhost:3000",
   })
 );
 app.use(express.json({ limit: "10mb" }));
@@ -41,6 +41,6 @@ app.get("/api/v1/health", (req, res) => {
 });
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server connected on port: ${PORT}`);
 });
