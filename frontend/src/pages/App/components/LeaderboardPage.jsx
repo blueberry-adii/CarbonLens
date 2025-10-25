@@ -137,10 +137,10 @@ export default function LeaderboardPage() {
                     entry.rank === 1
                       ? "bg-yellow-400 text-white"
                       : entry.rank === 2
-                      ? "bg-gray-300 text-gray-700"
-                      : entry.rank === 3
-                      ? "bg-orange-300 text-white"
-                      : "bg-gray-100 text-gray-600"
+                        ? "bg-gray-300 text-gray-700"
+                        : entry.rank === 3
+                          ? "bg-orange-300 text-white"
+                          : "bg-gray-100 text-gray-600"
                   }`}
                 >
                   {entry.rank}

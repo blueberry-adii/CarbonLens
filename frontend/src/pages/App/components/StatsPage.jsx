@@ -100,8 +100,8 @@ export default function StatsPage() {
               (selectedPeriod === "week"
                 ? dashboard?.weekly?.carbonSaved
                 : selectedPeriod === "month"
-                ? dashboard?.monthly?.carbonSaved
-                : dashboard?.today?.carbonSaved) ?? 0
+                  ? dashboard?.monthly?.carbonSaved
+                  : dashboard?.today?.carbonSaved) ?? 0
             ).toFixed(2)} kg`}
             subtitle="vs. baseline"
             color="green"
@@ -114,8 +114,8 @@ export default function StatsPage() {
               selectedPeriod === "week"
                 ? profile?.settings?.carbonGoal
                 : selectedPeriod === "month"
-                ? profile?.settings?.carbonGoal * 30
-                : (profile?.settings?.carbonGoal / 7).toFixed(1)
+                  ? profile?.settings?.carbonGoal * 30
+                  : (profile?.settings?.carbonGoal / 7).toFixed(1)
             } kg`}
             subtitle="carbon offset"
             color="blue"

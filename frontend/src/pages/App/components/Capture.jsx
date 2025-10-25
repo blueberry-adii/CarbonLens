@@ -1,8 +1,8 @@
 const apiUrl = import.meta.env.VITE_API_URL;
-import { useState, useRef } from 'react';
-import { Camera, Upload, Leaf, CheckCircle } from 'lucide-react';
-import Header from './Header';
-import axios from 'axios';
+import { useState, useRef } from "react";
+import { Camera, Upload, Leaf, CheckCircle } from "lucide-react";
+import Header from "./Header";
+import axios from "axios";
 
 export default function CameraCapture() {
   const [file, setFile] = useState(null);
@@ -11,12 +11,12 @@ export default function CameraCapture() {
   const [results, setResults] = useState(null);
   const fileInputRef = useRef(null);
 
-  const handleFileSelect = event => {
+  const handleFileSelect = (event) => {
     const file = event.target.files[0];
     setFile(file);
     if (file) {
       const reader = new FileReader();
-      reader.onload = e => {
+      reader.onload = (e) => {
         setCapturedImage(e.target.result);
         analyzeImage();
       };
@@ -25,19 +25,19 @@ export default function CameraCapture() {
   };
 
   const analyzeImage = () => {
-    if (!file) return alert('No file selected');
+    if (!file) return alert("No file selected");
     setAnalyzing(true);
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append("image", file);
     axios
       .post(`${apiUrl}/api/v1/carbon/analyze`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
         withCredentials: true,
       })
-      .then(res => {
-        console.log('Upload success: ', res.data);
+      .then((res) => {
+        console.log("Upload success: ", res.data);
         setResults({
           items: res.data.data.breakdown,
           totalCarbon: res.data.data.totalCarbon,
@@ -49,7 +49,7 @@ export default function CameraCapture() {
           },
         });
       })
-      .catch(e => console.log(e))
+      .catch((e) => console.log(e))
       .finally(() => {
         setAnalyzing(false);
       });
@@ -74,7 +74,7 @@ export default function CameraCapture() {
   };
 
   const saveEntry = () => {
-    console.log('Saving entry...');
+    console.log("Saving entry...");
     reset();
   };
 
