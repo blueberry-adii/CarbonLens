@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useState } from "react";
 import {
   Leaf,
@@ -82,7 +83,7 @@ export default function AuthPage() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/v1/auth/login",
+        `${apiUrl}/api/v1/auth/login`,
         {
           email: loginForm.email,
           password: loginForm.password,
@@ -118,7 +119,7 @@ export default function AuthPage() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/v1/auth/register",
+        `${apiUrl}/api/v1/auth/register`,
         {
           name: signupForm.name,
           email: signupForm.email,

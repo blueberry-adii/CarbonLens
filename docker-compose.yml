@@ -1,0 +1,107 @@
+# version: "3.9"
+
+# services:
+#   backend:
+#     build: ./backend
+#     container_name: backend
+#     command: npm start
+#     volumes:
+#       - ./backend:/app
+#       - /app/node_modules
+#     ports:
+#       - "5000:5000"
+#     environment:
+#       - MONGO_URI=mongodb://mongo:27017/carbonlens
+#     depends_on:
+#       - mongo
+
+#   frontend:
+#     build: ./frontend
+#     container_name: frontend
+#     command: npm run dev -- --host
+
+#     volumes:
+#       - ./frontend:/app
+#       - /app/node_modules
+#     ports:
+#       - "3000:5173"
+#     environment:
+#       - VITE_BACKEND_URL=http://localhost:5000
+#     depends_on:
+#       - backend
+
+#   mongo:
+#     image: mongo:6
+#     container_name: mongo
+#     ports:
+#       - "27017:27017"
+#     volumes:
+#       - mongo-data-dev:/data/db
+
+# volumes:
+#   mongo-data-dev:
+
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - mern_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: development
+      MONGODB_URI: mongodb://mongo:27017/carbonlens
+      PORT: 5000
+      MAX_FILE_SIZE: 5242880
+      UPLOAD_PATH: uploads
+      JWT_SECRET: your-super-secret-key
+    depends_on:
+      - mongodb
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - mern_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:5000
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - mern_network
+    stdin_open: true
+    tty: true
+
+networks:
+  mern_network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    driver: local

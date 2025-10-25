@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 
+const apiUrl = import.meta.env.VITE_API_URL;
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
@@ -9,40 +10,35 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   async function getAchievements() {
-    const res = await axios.get(
-      "http://localhost:5000/api/v1/users/achievements",
-      {
-        withCredentials: true,
-      }
-    );
+    const res = await axios.get(`${apiUrl}/api/v1/users/achievements`, {
+      withCredentials: true,
+    });
     return res.data.data;
   }
 
   async function getProfile() {
-    const res = await axios.get("http://localhost:5000/api/v1/users/profile", {
+    const res = await axios.get(`${apiUrl}/api/v1/users/profile`, {
       withCredentials: true,
     });
     return res.data.data;
   }
 
   async function getDashboard() {
-    const res = await axios.get(
-      "http://localhost:5000/api/v1/analytics/dashboard",
-      { withCredentials: true }
-    );
+    const res = await axios.get(`${apiUrl}/api/v1/analytics/dashboard`, {
+      withCredentials: true,
+    });
     return res.data.data;
   }
 
   async function getWeeklyTrend() {
-    const res = await axios.get(
-      "http://localhost:5000/api/v1/analytics/weekly-trend",
-      { withCredentials: true }
-    );
+    const res = await axios.get(`${apiUrl}/api/v1/analytics/weekly-trend`, {
+      withCredentials: true,
+    });
     return res.data.data;
   }
 
   async function getAllEntries() {
-    const res = await axios.get("http://localhost:5000/api/v1/carbon/entries", {
+    const res = await axios.get(`${apiUrl}/api/v1/carbon/entries`, {
       withCredentials: true,
     });
     return res.data.data;
@@ -71,7 +67,7 @@ export function AuthProvider({ children }) {
   function setSettings({ dailyReminders, weeklyReports, carbonGoal }) {
     axios
       .put(
-        "http://localhost:5000/api/v1/users/settings",
+        `${apiUrl}/api/v1/users/settings`,
         { dailyReminders, weeklyReports, carbonGoal },
         { withCredentials: true }
       )
@@ -84,11 +80,7 @@ export function AuthProvider({ children }) {
 
   function logout() {
     axios
-      .post(
-        "http://localhost:5000/api/v1/auth/logout",
-        {},
-        { withCredentials: true }
-      )
+      .post(`${apiUrl}/api/v1/auth/logout`, {}, { withCredentials: true })
       .then((res) => {
         setProfile(null);
         window.location.reload();
