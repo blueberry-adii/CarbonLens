@@ -4,7 +4,45 @@ const fs = require("fs");
 class AIService {
   constructor() {
     this.clarifaiApiKey = process.env.CLARIFAI_API_KEY;
-    this.openaiApiKey = process.env.OPENAI_API_KEY;
+    this.geminiApiKey = process.env.GEMINI_API_KEY;
+
+    if (this.geminiApiKey) {
+      const { GoogleGenerativeAI, SchemaType } = require("@google/generative-ai");
+      const genAI = new GoogleGenerativeAI(this.geminiApiKey);
+      this.model = genAI.getGenerativeModel({
+        model: "gemini-2.5-flash",
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: SchemaType.OBJECT,
+            properties: {
+              tips: {
+                type: SchemaType.ARRAY,
+                items: { type: SchemaType.STRING },
+              },
+              alternatives: {
+                type: SchemaType.ARRAY,
+                items: {
+                  type: SchemaType.OBJECT,
+                  properties: {
+                    suggestion: { type: SchemaType.STRING },
+                    potentialSaving: { type: SchemaType.NUMBER },
+                  },
+                },
+              },
+              comparison: {
+                type: SchemaType.OBJECT,
+                properties: {
+                  avgMeal: { type: SchemaType.NUMBER },
+                  percentDifference: { type: SchemaType.NUMBER },
+                },
+              },
+            },
+            required: ["tips", "alternatives", "comparison"],
+          },
+        },
+      });
+    }
   }
 
   async analyzeImage(imagePath) {
@@ -55,8 +93,8 @@ class AIService {
 
   async generateInsights(detectedItems, totalCarbon) {
     try {
-      if (!this.openaiApiKey) {
-        console.log("⚠️ No OpenAI API key found, returning mock insights");
+      if (!this.geminiApiKey) {
+        console.log("⚠️ No Gemini API key found, returning mock insights");
         return this.getMockInsights(detectedItems, totalCarbon);
       }
 
@@ -71,7 +109,7 @@ class AIService {
         2. 2 sustainable alternatives for high-carbon items
         3. A brief comparison with average meal carbon footprint (8.5 kg CO2)
         
-        Respond in JSON format:
+        Respond in strict JSON format without any markdown code blocks:
         {
           "tips": ["tip1", "tip2", "tip3"],
           "alternatives": [{"suggestion": "alt1", "potentialSaving": 2.5}],
@@ -79,27 +117,81 @@ class AIService {
         }
       `;
 
-      const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: prompt }],
-          temperature: 0.7,
-          max_tokens: 500,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${this.openaiApiKey}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      // Retry mechanism
+      let retries = 3;
+      while (retries > 0) {
+        try {
+          const result = await this.model.generateContent(prompt);
+          const response = await result.response;
+          let text = response.text();
 
-      const aiResponse = response.data.choices[0].message.content;
-      return JSON.parse(aiResponse);
+          text = text.replace(/```json/g, "").replace(/```/g, "").trim();
+          return JSON.parse(text);
+        } catch (err) {
+          console.log(`⚠️ Gemini API attempt failed (${retries} left):`, err.message);
+          retries--;
+          if (retries === 0) throw err;
+          // Wait 2 seconds before retry
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+      }
+
     } catch (error) {
-      console.error("OpenAI API error:", error.message);
-      return this.getMockInsights(detectedItems, totalCarbon);
+      console.error("Gemini API error:", error.message);
+      return {
+        tips: [
+          "Could not connect to the server to generate tips.",
+          "Please check your API key and connection.",
+          "Try again later.",
+        ],
+        alternatives: [],
+        comparison: {
+          avgMeal: 0,
+          percentDifference: 0,
+        },
+      };
+    }
+  }
+
+  async estimateCarbonFootprint(items) {
+    try {
+      if (!this.geminiApiKey) {
+        return {};
+      }
+
+      const prompt = `
+        Estimate the carbon footprint (in kg CO2e) for the following food items.
+        Items: ${items.join(", ")}
+        
+        Provide the result as a JSON object where potential keys are the item names (normalized to lowercase) and values are the estimated carbon footprint as a number.
+        If you are unsure, do not include the item in the object.
+        
+        Example:
+        {
+          "burger": 3.5,
+          "fries": 0.5
+        }
+      `;
+
+      let retries = 3;
+      while (retries > 0) {
+        try {
+          const result = await this.model.generateContent(prompt);
+          const response = await result.response;
+          let text = response.text();
+          text = text.replace(/```json/g, "").replace(/```/g, "").trim();
+          return JSON.parse(text);
+        } catch (err) {
+          console.log(`⚠️ Gemini Carbon Estimate attempt failed (${retries} left):`, err.message);
+          retries--;
+          if (retries === 0) return {};
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+      }
+      return {};
+    } catch (error) {
+      console.error("Gemini Carbon Estimate error:", error.message);
+      return {};
     }
   }
 

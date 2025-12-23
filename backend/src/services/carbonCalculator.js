@@ -42,13 +42,23 @@ class CarbonCalculator {
     };
   }
 
-  async calculateCarbon(detectedItems) {
+  async calculateCarbon(detectedItems, aiEstimates = {}) {
     try {
       const breakdown = [];
       let totalCarbon = 0;
 
       for (const item of detectedItems) {
-        const carbonValue = await this.getCarbonValue(item.name);
+        let carbonValue;
+
+        // Try to get from AI estimates first
+        if (aiEstimates && aiEstimates[item.name.toLowerCase()]) {
+          carbonValue = aiEstimates[item.name.toLowerCase()];
+          console.log(`🤖 Used AI carbon estimate for ${item.name}: ${carbonValue}`);
+        } else {
+          // Fallback to database/hardcoded
+          carbonValue = await this.getCarbonValue(item.name);
+        }
+
         const itemCarbon = carbonValue * this.getServingMultiplier(item.name);
 
         breakdown.push({

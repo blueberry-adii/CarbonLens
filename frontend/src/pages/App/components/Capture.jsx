@@ -1,43 +1,30 @@
 const apiUrl = import.meta.env.VITE_API_URL;
-import { useState, useRef } from "react";
-import { Camera, Upload, Leaf, CheckCircle } from "lucide-react";
+import { useState } from "react";
+import { PenTool, Leaf, CheckCircle, Plus, X } from "lucide-react";
 import Header from "./Header";
 import axios from "axios";
 
-export default function CameraCapture() {
-  const [file, setFile] = useState(null);
-  const [capturedImage, setCapturedImage] = useState(null);
+export default function ManualEntry() {
+  const [items, setItems] = useState("");
   const [analyzing, setAnalyzing] = useState(false);
   const [results, setResults] = useState(null);
-  const fileInputRef = useRef(null);
 
-  const handleFileSelect = (event) => {
-    const file = event.target.files[0];
-    setFile(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setCapturedImage(e.target.result);
-        analyzeImage();
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const analyzeMeal = () => {
+    if (!items.trim()) return alert("Please enter at least one item");
 
-  const analyzeImage = () => {
-    if (!file) return alert("No file selected");
+    // Split by comma and clean up
+    const itemsList = items.split(",").map(item => item.trim()).filter(item => item.length > 0);
+
+    if (itemsList.length === 0) return alert("Please enter valid items");
+
     setAnalyzing(true);
-    const formData = new FormData();
-    formData.append("image", file);
+
     axios
-      .post(`${apiUrl}/api/v1/carbon/analyze`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      .post(`${apiUrl}/api/v1/carbon/log`, { items: itemsList }, {
         withCredentials: true,
       })
       .then((res) => {
-        console.log("Upload success: ", res.data);
+        console.log("Log success: ", res.data);
         setResults({
           items: res.data.data.breakdown,
           totalCarbon: res.data.data.totalCarbon,
@@ -49,28 +36,13 @@ export default function CameraCapture() {
           },
         });
       })
-      .catch((e) => console.log(e))
+      .catch((e) => {
+        console.log(e);
+        alert("Failed to log meal. Please try again.");
+      })
       .finally(() => {
         setAnalyzing(false);
       });
-    // setTimeout(() => {
-    //   setResults({
-    //     items: [
-    //       { name: "Grilled Salmon", carbon: 4.2 },
-    //       { name: "Quinoa", carbon: 1.8 },
-    //       { name: "Steamed Broccoli", carbon: 0.7 },
-    //     ],
-    //     totalCarbon: 6.7,
-    //     confidence: 0.92,
-    //     tips: [
-    //       "Excellent sustainable choice!",
-    //       "Salmon is a great protein with lower carbon impact",
-    //       "Adding more vegetables reduces footprint further",
-    //     ],
-    //     comparison: { avgMeal: 12.5, savings: 5.8 },
-    //   });
-    //   setAnalyzing(false);
-    // }, 3000);
   };
 
   const saveEntry = () => {
@@ -79,7 +51,7 @@ export default function CameraCapture() {
   };
 
   const reset = () => {
-    setCapturedImage(null);
+    setItems("");
     setResults(null);
     setAnalyzing(false);
   };
@@ -96,10 +68,10 @@ export default function CameraCapture() {
             </div>
           </div>
           <h3 className="text-2xl font-bold text-gray-800 mb-2">
-            Analyzing Your Meal
+            Calculating Footprint
           </h3>
           <p className="text-gray-600">
-            AI is identifying ingredients and calculating carbon footprint
+            Analyzing your meal items...
           </p>
           <div className="flex justify-center space-x-1 mt-6">
             <div className="w-3 h-3 bg-green-500 rounded-full animate-bounce"></div>
@@ -114,58 +86,48 @@ export default function CameraCapture() {
   return (
     <div className="bg-gray-50 min-h-screen">
       <Header
-        title="Capture Meal"
-        subtitle="Snap a photo to track carbon footprint"
+        title="Log Meal"
+        subtitle="Manually track your carbon footprint"
       />
 
       <div className="p-6 space-y-6 pb-24">
-        {!capturedImage ? (
-          <div className="bg-white rounded-3xl shadow-xl p-12 text-center">
-            <div className="w-32 h-32 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-8">
-              <Camera size={48} className="text-green-600" />
+        {!results ? (
+          <div className="bg-white rounded-3xl shadow-xl p-8">
+            <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <PenTool size={32} className="text-green-600" />
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Ready to Analyze?
+            <h2 className="text-2xl font-bold text-gray-800 mb-2 text-center">
+              What did you eat?
             </h2>
-            <p className="text-gray-600 mb-8 leading-relaxed">
-              Take a clear photo of your meal and our AI will identify
-              ingredients and calculate the carbon footprint
+            <p className="text-gray-600 mb-8 text-center leading-relaxed">
+              Enter your meal items separated by commas (e.g., "Burger, Fries, Coke")
             </p>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Meal Items
+                </label>
+                <textarea
+                  value={items}
+                  onChange={(e) => setItems(e.target.value)}
+                  placeholder="Grilled Chicken, Rice, Salad..."
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all resize-none h-32 text-gray-800 placeholder-gray-400"
+                />
+              </div>
+
               <button
-                onClick={() => fileInputRef.current?.click()}
+                onClick={analyzeMeal}
                 className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl font-semibold flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[101%] cursor-pointer shadow-lg"
               >
-                <Upload size={24} />
-                Choose Photo
-              </button>
-
-              <button className="w-full border-2 border-green-600 text-green-600 hover:bg-green-50 px-8 py-4 rounded-2xl font-semibold flex items-center justify-center gap-3 transition-all duration-300 cursor-pointer">
-                <Camera size={24} />
-                Take Photo
+                <Leaf size={20} />
+                Calculate Footprint
               </button>
             </div>
-
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileSelect}
-              accept="image/*"
-              className="hidden"
-            />
           </div>
-        ) : results ? (
+        ) : (
           <div className="space-y-6">
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-              <img
-                src={capturedImage}
-                alt="Analyzed meal"
-                className="w-full h-64 object-cover"
-              />
-            </div>
-
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <div className="text-center mb-6">
                 <div className="text-4xl font-bold text-gray-800 mb-2">
@@ -176,7 +138,7 @@ export default function CameraCapture() {
                 </div>
                 <div className="mt-3 inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm">
                   <CheckCircle size={16} />
-                  {Math.round(results.confidence * 100)}% confidence
+                  Manual Entry
                 </div>
               </div>
 
@@ -217,37 +179,13 @@ export default function CameraCapture() {
                   onClick={reset}
                   className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold transition-colors cursor-pointer"
                 >
-                  Retake Photo
+                  Log Another
                 </button>
                 <button
                   onClick={saveEntry}
                   className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 cursor-pointer"
                 >
-                  Save Entry
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-            <img
-              src={capturedImage}
-              alt="Captured meal"
-              className="w-full h-64 object-cover"
-            />
-            <div className="p-6">
-              <div className="flex gap-3">
-                <button
-                  onClick={reset}
-                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold transition-colors cursor-pointer"
-                >
-                  Retake
-                </button>
-                <button
-                  onClick={analyzeImage}
-                  className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 cursor-pointer"
-                >
-                  Analyze
+                  Done
                 </button>
               </div>
             </div>

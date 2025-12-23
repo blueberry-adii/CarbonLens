@@ -6,12 +6,16 @@ const {
   getUserCarbonEntries,
   getSpecificEntry,
   deleteEntry,
+  logManualMeal,
 } = require("../controllers/carbon.controller");
 
 const router = express.Router();
 
 // Analyze meal image
 router.post("/analyze", authMiddleware, upload.single("image"), analyzeMeal);
+
+// Log meal manually
+router.post("/log", authMiddleware, logManualMeal);
 
 // Get user's carbon entries
 router.get("/entries", authMiddleware, getUserCarbonEntries);

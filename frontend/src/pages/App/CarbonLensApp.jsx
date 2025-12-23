@@ -2,16 +2,16 @@ import Navigation from "./components/Navigation";
 import { useState } from "react";
 import { mockCarbonEntries } from "../../constants";
 import EntryDetailModal from "./components/EntryDetailModal";
-import QuickActionMenu from "./components/QuickActionMenu";
 import NotificationToast from "./components/NotificationToast";
 import FloatingActionButton from "./components/FloatingActionButton";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import { PenTool } from "lucide-react";
 
 export default function CarbonLensApp() {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState("home");
   const [selectedEntry, setSelectedEntry] = useState(mockCarbonEntries[0]);
   const [showEntryModal, setShowEntryModal] = useState(false);
-  const [showQuickActions, setShowQuickActions] = useState(false);
   const [notification, setNotification] = useState({
     message: "",
     type: "success",
@@ -57,17 +57,9 @@ export default function CarbonLensApp() {
           onEdit={handleEditEntry}
         />
       </div>
-      <FloatingActionButton onClick={() => setShowQuickActions(true)} />
-
-      <QuickActionMenu
-        isOpen={showQuickActions}
-        onClose={() => setShowQuickActions(false)}
-        onCapture={() => {
-          setShowQuickActions(false);
-        }}
-        onManualEntry={() => {
-          setShowQuickActions(false);
-        }}
+      <FloatingActionButton
+        onClick={() => navigate("/app/capture")}
+        icon={PenTool}
       />
 
       <NotificationToast

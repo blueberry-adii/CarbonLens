@@ -8,6 +8,7 @@ import {
   Target,
   Award,
   Leaf,
+  PenTool,
 } from "lucide-react";
 import StatsCard from "./StatsCard";
 import {
@@ -36,10 +37,10 @@ export default function HomeDashboard() {
   const percentage =
     weeklyAvg !== 0
       ? (
-          (todayCarbon > weeklyAvg
-            ? ((todayCarbon - weeklyAvg) * 100) / weeklyAvg
-            : ((weeklyAvg - todayCarbon) * 100) / weeklyAvg) ?? 0
-        ).toFixed(0)
+        (todayCarbon > weeklyAvg
+          ? ((todayCarbon - weeklyAvg) * 100) / weeklyAvg
+          : ((weeklyAvg - todayCarbon) * 100) / weeklyAvg) ?? 0
+      ).toFixed(0)
       : 0;
   const carbonEntries = dashboard?.recentEntries;
 
@@ -97,8 +98,8 @@ export default function HomeDashboard() {
             to={"/app/capture"}
             className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:scale-[100.5%] text-white p-4 rounded-2xl font-semibold flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
           >
-            <Camera size={20} />
-            Quick Capture
+            <PenTool size={20} />
+            Log Meal
           </Link>
           <Link
             to={"/app/stats"}
@@ -115,11 +116,10 @@ export default function HomeDashboard() {
             </div>
             <div className="text-gray-600 mb-4">Today's Carbon Impact</div>
             <div
-              className={`inline-flex items-center gap-2  ${
-                todayCarbon > weeklyAvg
-                  ? "bg-red-100 text-red-600"
-                  : "bg-green-100 text-green-800"
-              } px-4 py-2 rounded-full text-sm font-medium`}
+              className={`inline-flex items-center gap-2  ${todayCarbon > weeklyAvg
+                ? "bg-red-100 text-red-600"
+                : "bg-green-100 text-green-800"
+                } px-4 py-2 rounded-full text-sm font-medium`}
             >
               {todayCarbon > weeklyAvg ? (
                 <TrendingUp size={16} />
@@ -143,11 +143,10 @@ export default function HomeDashboard() {
           <StatsCard
             icon={Award}
             title="Carbon Saved"
-            value={`${
-              dashboard?.monthly.carbonSaved
-                ? dashboard?.monthly.carbonSaved.toFixed(2)
-                : 0
-            } kg`}
+            value={`${dashboard?.monthly.carbonSaved
+              ? dashboard?.monthly.carbonSaved.toFixed(2)
+              : 0
+              } kg`}
             subtitle="This month"
             color="purple"
           />
